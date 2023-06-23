@@ -22,14 +22,12 @@ public class Manager extends Worker{
 		case 5:
 			return username;
 		case 6:
-			return password;
-		case 7:
 			return proEduLvl;
-		case 8:
+		case 7:
 			return serviceYears;
-		case 9:
+		case 8:
 			return basePay;
-		case 10:
+		case 9:
 			return bonus;
 		default:
 			return "";

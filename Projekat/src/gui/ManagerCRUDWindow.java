@@ -3,15 +3,12 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import humanEntities.Manager;
-import paket1.BeautySalon;
 
 public class ManagerCRUDWindow extends JDialog {
 
@@ -22,12 +19,23 @@ public class ManagerCRUDWindow extends JDialog {
 	private JScrollPane scrollPane;
 	
 	AddManagerWindow addManagerWindow;
+	ModifyManagerWindow modifyManagerWindow;
 
 	public ManagerCRUDWindow(InitialWindow parent) {
 		super(parent, true);
 		setResizable(false);
 		
-		generateTable();
+		model = new ManagerModel();
+		table = new JTable(model);
+		
+		table.setRowSelectionAllowed(true);
+		table.setFocusable(true);
+		
+		scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(27, 28, 959, 433);
+		
+		getContentPane().setLayout(null);
+		getContentPane().add(scrollPane);
 		
 		JButton addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
@@ -43,6 +51,10 @@ public class ManagerCRUDWindow extends JDialog {
 		JButton removeButton = new JButton("Remove");
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+	            if(table.getSelectedRow() != -1) {
+	               model.removeRow(table.getSelectedRow());
+	               JOptionPane.showMessageDialog(null, "Selected row deleted successfully!");
+	            }
 			}
 		});
 		removeButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -52,6 +64,10 @@ public class ManagerCRUDWindow extends JDialog {
 		JButton modifyButton = new JButton("Modify");
 		modifyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow() != -1) {
+					modifyManagerWindow = new ModifyManagerWindow(ManagerCRUDWindow.this, table.getSelectedRow());
+					modifyManagerWindow.setVisible(true);
+				}
 			}
 		});
 		modifyButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -72,18 +88,8 @@ public class ManagerCRUDWindow extends JDialog {
 		setTitle("Manager CRUD");
 	}
 	
-	public void generateTable()
-	{
-		BeautySalon beautySalon = BeautySalon.getBeautySalon();
-		ArrayList<Manager> managers = beautySalon.getManagers();
-		
-		model = new ManagerModel(managers);
-		table = new JTable(model);
-		
-		scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(27, 28, 959, 433);
-		
-		getContentPane().setLayout(null);
-		getContentPane().add(scrollPane);
+	public void refreshTable()
+	{	
+		model.fireTableDataChanged();
 	}
 }

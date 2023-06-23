@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 import humanEntities.Manager;
+import paket1.BeautySalon;
+import service.ManagerService;
 
 public class ManagerModel extends AbstractTableModel {
 	
@@ -12,13 +14,16 @@ public class ManagerModel extends AbstractTableModel {
 	
 	private String[] columns = {"Name", "Surname", "Sex", "Phone Number", "Address", "Username", "Education Lvl", "Service Years", "Base Pay", "Bonus"};
 	
+	private BeautySalon beautySalon;
+	
 	private ArrayList<Manager> managers;
 	
 	
 
-	public ManagerModel(ArrayList<Manager> managers)
+	public ManagerModel()
 	{
-		this.managers = managers;
+		this.beautySalon = BeautySalon.getBeautySalon();
+		this.managers = beautySalon.getManagers();
 	}
 
 	@Override
@@ -56,6 +61,15 @@ public class ManagerModel extends AbstractTableModel {
 	{
 		Manager m = managers.get(rowIndex);
 		return m.toCell(columnIndex);
+	}
+
+	public void removeRow(int rowIndex) {
+		Manager m = managers.get(rowIndex);
+		
+		ManagerService managerService = new ManagerService();
+		managerService.removeManager(m.getUsername());
+		
+		fireTableDataChanged();
 	}
 	
 	

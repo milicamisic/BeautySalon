@@ -19,8 +19,6 @@ import javax.swing.JTextField;
 
 import humanEntities.Role;
 import humanEntities.Sex;
-import paket1.BeautySalon;
-import service.ClientService;
 import service.UserService;
 
 public class InitialWindow extends JFrame{
