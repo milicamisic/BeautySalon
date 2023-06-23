@@ -91,6 +91,33 @@ public class Beautician extends Worker{
 		}
 	}
 
+	public Object toCell(int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return name;
+		case 1:
+			return surname;
+		case 2:
+			return sex.toString();
+		case 3:
+			return phoneNumber;
+		case 4:
+			return address;
+		case 5:
+			return username;
+		case 6:
+			return proEduLvl;
+		case 7:
+			return serviceYears;
+		case 8:
+			return basePay;
+		case 9:
+			return bonus;
+		default:
+			return "";
+		}
+	}
+
 }
 
 

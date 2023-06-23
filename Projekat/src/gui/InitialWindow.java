@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import gui.beauticianCRUD.BeauticianCRUDWindow;
+import gui.managerCRUD.ManagerCRUDWindow;
 import humanEntities.Role;
 import humanEntities.Sex;
 import service.UserService;
@@ -64,8 +66,8 @@ public class InitialWindow extends JFrame{
 	private final JButton viewClientsButton = new JButton("Clients");
 	private final JButton viewAppointmentsButton = new JButton("Appointments");
 	
-	ManagerCRUDWindow managersCRUDWindow;
-
+	ManagerCRUDWindow managerCRUDWindow;
+	BeauticianCRUDWindow beauticianCRUDWindow;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -300,14 +302,20 @@ public class InitialWindow extends JFrame{
 		managerPanel.setLayout(null);
 		viewManagersButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				managersCRUDWindow = new ManagerCRUDWindow(InitialWindow.this);
-				managersCRUDWindow.setVisible(true);
+				managerCRUDWindow = new ManagerCRUDWindow(InitialWindow.this);
+				managerCRUDWindow.setVisible(true);
 			}
 		});
 		viewManagersButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewManagersButton.setBounds(110, 73, 195, 58);
 		
 		managerPanel.add(viewManagersButton);
+		viewBeauticiansButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				beauticianCRUDWindow = new BeauticianCRUDWindow(InitialWindow.this);
+				beauticianCRUDWindow.setVisible(true);
+			}
+		});
 		viewBeauticiansButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewBeauticiansButton.setBounds(110, 169, 195, 58);
 		

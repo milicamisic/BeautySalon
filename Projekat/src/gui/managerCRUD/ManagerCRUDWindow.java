@@ -1,4 +1,4 @@
-package gui;
+package gui.managerCRUD;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -9,6 +9,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import gui.InitialWindow;
 
 public class ManagerCRUDWindow extends JDialog {
 

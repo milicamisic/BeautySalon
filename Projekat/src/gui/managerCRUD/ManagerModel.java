@@ -1,4 +1,4 @@
-package gui;
+package gui.managerCRUD;
 
 import java.util.ArrayList;
 

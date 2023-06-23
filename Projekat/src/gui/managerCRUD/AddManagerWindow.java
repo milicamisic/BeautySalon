@@ -1,10 +1,9 @@
-package gui;
+package gui.managerCRUD;
 
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,13 +14,12 @@ import javax.swing.JTextField;
 
 import humanEntities.Manager;
 import humanEntities.Sex;
-import paket1.BeautySalon;
 import service.ManagerService;
 import service.UserService;
 
-public class ModifyManagerWindow extends JDialog {
-
-	private static final long serialVersionUID = 4120706470578442558L;
+public class AddManagerWindow extends JDialog {
+	
+	private static final long serialVersionUID = 6942042170462061710L;
 	
 	private JTextField nameField;
 	private JTextField surnameField;
@@ -33,12 +31,8 @@ public class ModifyManagerWindow extends JDialog {
 	private JTextField educationLevelField;
 	private JTextField serviceYearsField;
 
-	public ModifyManagerWindow(ManagerCRUDWindow parent, int rowIndex) {
+	public AddManagerWindow(ManagerCRUDWindow parent) {
 		super(parent, true);
-		
-		BeautySalon beautySalon = BeautySalon.getBeautySalon();
-		ArrayList<Manager> managers = beautySalon.getManagers();
-		Manager managerForModification = managers.get(rowIndex);
 		
 		setMinimumSize(new Dimension(980, 630));
 		setResizable(false);
@@ -52,7 +46,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblNewLabel.setBounds(60, 66, 127, 48);
 		getContentPane().add(lblNewLabel);
 		
-		nameField = new JTextField(managerForModification.getName());
+		nameField = new JTextField();
 		nameField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		nameField.setBounds(259, 66, 144, 48);
 		getContentPane().add(nameField);
@@ -63,7 +57,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblSurname.setBounds(60, 161, 127, 48);
 		getContentPane().add(lblSurname);
 		
-		surnameField = new JTextField(managerForModification.getSurname());
+		surnameField = new JTextField();
 		surnameField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		surnameField.setColumns(10);
 		surnameField.setBounds(259, 161, 144, 48);
@@ -74,8 +68,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblUsername.setBounds(60, 255, 127, 48);
 		getContentPane().add(lblUsername);
 		
-		usernameField = new JTextField(managerForModification.getUsername());
-		usernameField.setEditable(false);
+		usernameField = new JTextField();
 		usernameField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		usernameField.setColumns(10);
 		usernameField.setBounds(259, 255, 144, 48);
@@ -86,7 +79,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblPassword.setBounds(60, 350, 127, 48);
 		getContentPane().add(lblPassword);
 		
-		passwordField = new JTextField(managerForModification.getPassword());
+		passwordField = new JTextField();
 		passwordField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		passwordField.setColumns(10);
 		passwordField.setBounds(259, 351, 144, 48);
@@ -97,7 +90,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblAddress.setBounds(490, 66, 127, 48);
 		getContentPane().add(lblAddress);
 		
-		addressField = new JTextField(managerForModification.getAddress());
+		addressField = new JTextField();
 		addressField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		addressField.setColumns(10);
 		addressField.setBounds(679, 66, 144, 48);
@@ -108,7 +101,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblPhone.setBounds(490, 161, 179, 48);
 		getContentPane().add(lblPhone);
 		
-		phoneNumberField = new JTextField(managerForModification.getPhoneNumber());
+		phoneNumberField = new JTextField();
 		phoneNumberField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		phoneNumberField.setColumns(10);
 		phoneNumberField.setBounds(679, 161, 144, 48);
@@ -123,7 +116,6 @@ public class ModifyManagerWindow extends JDialog {
 		JComboBox sexComboBox = new JComboBox(sexStrings);
 		sexComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		sexComboBox.setBounds(679, 255, 144, 48);
-		sexComboBox.setSelectedItem(managerForModification.getSex().toString());
 		getContentPane().add(sexComboBox);
 		
 		JLabel lblBasePay = new JLabel("Base Pay:");
@@ -131,7 +123,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblBasePay.setBounds(490, 350, 127, 48);
 		getContentPane().add(lblBasePay);
 		
-		basePayField = new JTextField(Double.toString(managerForModification.getBasePay()));
+		basePayField = new JTextField();
 		basePayField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		basePayField.setColumns(10);
 		basePayField.setBounds(679, 350, 144, 48);
@@ -142,7 +134,7 @@ public class ModifyManagerWindow extends JDialog {
 		lblEducationLevel.setBounds(60, 446, 189, 48);
 		getContentPane().add(lblEducationLevel);
 		
-		educationLevelField = new JTextField(Integer.toString(managerForModification.getProEduLvl()));
+		educationLevelField = new JTextField();
 		educationLevelField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		educationLevelField.setColumns(10);
 		educationLevelField.setBounds(259, 447, 144, 48);
@@ -153,14 +145,14 @@ public class ModifyManagerWindow extends JDialog {
 		lblServiceYears.setBounds(490, 446, 174, 48);
 		getContentPane().add(lblServiceYears);
 		
-		serviceYearsField = new JTextField(Integer.toString(managerForModification.getServiceYears()));
+		serviceYearsField = new JTextField();
 		serviceYearsField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		serviceYearsField.setColumns(10);
 		serviceYearsField.setBounds(679, 447, 144, 48);
 		getContentPane().add(serviceYearsField);
 		
-		JButton modifyButton = new JButton("Modify");
-		modifyButton.addActionListener(new ActionListener() {
+		JButton addButton = new JButton("Add");
+		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = nameField.getText();
 				String surname = surnameField.getText();
@@ -179,7 +171,7 @@ public class ModifyManagerWindow extends JDialog {
 				{
 					Manager manager = new Manager(name, surname, sex, phoneNumber, address, username, password, Integer.parseInt(educationLevelString), Integer.parseInt(serviceYearsString), 0, Double.parseDouble(basePayString));
 					ManagerService managerService = new ManagerService();
-					managerService.modifyManager(manager);
+					managerService.addManager(manager);
 					
 					parent.refreshTable();
 					
@@ -187,9 +179,9 @@ public class ModifyManagerWindow extends JDialog {
 				}
 			}
 		});
-		modifyButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		modifyButton.setBounds(623, 530, 156, 51);
-		getContentPane().add(modifyButton);
+		addButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		addButton.setBounds(623, 530, 156, 51);
+		getContentPane().add(addButton);
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
@@ -205,7 +197,7 @@ public class ModifyManagerWindow extends JDialog {
 	
 	private boolean valideFields(String name, String surname, String phoneNumber, String address, String username, String password, String basePayString, String educationLevelString, String serviceYearsString)
 	{
-		if(name.isEmpty() || surname.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || password.isEmpty()) 
+		if(name.isEmpty() || surname.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || username.isEmpty() || password.isEmpty()) 
 		{
 			JOptionPane.showMessageDialog(null, "All fields must be filled!", "Error message", JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -224,6 +216,11 @@ public class ModifyManagerWindow extends JDialog {
 		else if(!UserService.isNumber(phoneNumber)) 
 		{
 			JOptionPane.showMessageDialog(null, "Phone number can only contain digits!", "Error message", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		else if(UserService.usernameTaken(username)) 
+		{
+			JOptionPane.showMessageDialog(null, "There already exists an account with that username!", "Error message", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		
@@ -257,7 +254,7 @@ public class ModifyManagerWindow extends JDialog {
 			return false;
 		}
 		
-		JOptionPane.showMessageDialog(null, "Manager successfully modified!", "Information message", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Registration successful!", "Information message", JOptionPane.INFORMATION_MESSAGE);
 		return true;
 		
 	}

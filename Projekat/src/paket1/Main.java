@@ -1,7 +1,12 @@
 package paket1;
 
+import java.util.ArrayList;
+
+import humanEntities.Beautician;
+import humanEntities.Client;
 import humanEntities.Manager;
 import humanEntities.Sex;
+import otherEntities.ServiceType;
 import pisanje.MyWriter;
 
 public class Main {
@@ -15,6 +20,28 @@ public class Main {
 		
 		MyWriter wr = new MyWriter("src/data/managers3");
 		wr.write(manager);
+		
+		Beautician beautician1 = new Beautician("Sima", "Simić", Sex.MALE, "3334445550", "Partizanska 12", "sima",
+				"123", 4, 3, 0, 10000, new ArrayList<ServiceType>());
+		
+		Beautician beautician2 = new Beautician("Žika", "Žikić", Sex.MALE, "4445556660", "Partizanska 34", "zika",
+						"123", 4, 3, 0, 10000, new ArrayList<ServiceType>());
+		
+		Beautician beautician3 = new Beautician("Jovana", "Jovanović", Sex.FEMALE, "5556667770", "Mackova 132", "jovana",
+						"123", 4, 3, 0, 10000, new ArrayList<ServiceType>());
+		
+		
+		MyWriter bWriter = new MyWriter("src/data/beauticians3");
+		bWriter.write(beautician1);
+		bWriter.write(beautician2);
+		bWriter.write(beautician3);
+		
+		
+		// Kreirati 3 tipa tretmana (masaža, manikir, pedikir).
+		MyWriter stWriter = new MyWriter("src/data/service_types3");
+		stWriter.write(new ServiceType("masaža"));
+		stWriter.write(new ServiceType("manikir"));
+		stWriter.write(new ServiceType("pedikir"));
 		
 		/* TEST ZA KT2
 		// Podesiti naziv salona na “Moj salon”. Podesiti radno vreme salona.
