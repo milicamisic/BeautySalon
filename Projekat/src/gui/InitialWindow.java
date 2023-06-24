@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import gui.beauticianCRUD.BeauticianCRUDWindow;
+import gui.clientCRUD.ClientCRUDWindow;
 import gui.managerCRUD.ManagerCRUDWindow;
 import humanEntities.Role;
 import humanEntities.Sex;
@@ -68,6 +69,7 @@ public class InitialWindow extends JFrame{
 	
 	ManagerCRUDWindow managerCRUDWindow;
 	BeauticianCRUDWindow beauticianCRUDWindow;
+	ClientCRUDWindow clientCRUDWindow;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -308,8 +310,8 @@ public class InitialWindow extends JFrame{
 		});
 		viewManagersButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewManagersButton.setBounds(110, 73, 195, 58);
-		
 		managerPanel.add(viewManagersButton);
+		
 		viewBeauticiansButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				beauticianCRUDWindow = new BeauticianCRUDWindow(InitialWindow.this);
@@ -318,12 +320,18 @@ public class InitialWindow extends JFrame{
 		});
 		viewBeauticiansButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewBeauticiansButton.setBounds(110, 169, 195, 58);
-		
 		managerPanel.add(viewBeauticiansButton);
+		
 		viewReceptionistsButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewReceptionistsButton.setBounds(110, 264, 195, 58);
-		
 		managerPanel.add(viewReceptionistsButton);
+		
+		viewClientsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clientCRUDWindow = new ClientCRUDWindow(InitialWindow.this);
+				clientCRUDWindow.setVisible(true);
+			}
+		});
 		viewClientsButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewClientsButton.setBounds(110, 358, 195, 58);
 		
