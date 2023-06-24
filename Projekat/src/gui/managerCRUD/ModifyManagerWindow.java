@@ -257,7 +257,7 @@ public class ModifyManagerWindow extends JDialog {
 			return false;
 		}
 		
-		JOptionPane.showMessageDialog(null, "Manager successfully modified!", "Information message", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Manager modified!", "Information message", JOptionPane.INFORMATION_MESSAGE);
 		return true;
 		
 	}

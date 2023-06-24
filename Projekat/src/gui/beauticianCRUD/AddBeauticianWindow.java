@@ -198,7 +198,7 @@ public class AddBeauticianWindow extends JDialog {
 				}
 				else
 				{
-					
+					JOptionPane.showMessageDialog(null, "Skill added!", "Information message", JOptionPane.INFORMATION_MESSAGE);
 					DefaultComboBoxModel<String> newModel = (DefaultComboBoxModel<String>) beauticianSkillsComboBox.getModel();
 					beauticianSkills.add(selectedSkill);
 					newModel.addElement(selectedSkill);
@@ -213,6 +213,19 @@ public class AddBeauticianWindow extends JDialog {
 		JButton removeSkillButton = new JButton("Remove");
 		removeSkillButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String selectedSkill = (String) availableSkillsComboBox.getSelectedItem();
+				if(!beauticianSkills.contains(selectedSkill))
+				{
+					JOptionPane.showMessageDialog(null, "Beautician doesn't have that skill!", "Error message", JOptionPane.ERROR_MESSAGE);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "Skill removed!", "Information message", JOptionPane.INFORMATION_MESSAGE);
+					DefaultComboBoxModel<String> newModel = (DefaultComboBoxModel<String>) beauticianSkillsComboBox.getModel();
+					beauticianSkills.remove(selectedSkill);
+					newModel.removeElement(selectedSkill);
+					beauticianSkillsComboBox.setModel(newModel);
+				}
 			}
 		});
 		removeSkillButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -331,7 +344,7 @@ public class AddBeauticianWindow extends JDialog {
 			return false;
 		}
 		
-		JOptionPane.showMessageDialog(null, "Registration successful!", "Information message", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Beautician added!", "Information message", JOptionPane.INFORMATION_MESSAGE);
 		return true;
 	}
 }

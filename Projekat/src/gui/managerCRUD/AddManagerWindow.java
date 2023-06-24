@@ -254,7 +254,7 @@ public class AddManagerWindow extends JDialog {
 			return false;
 		}
 		
-		JOptionPane.showMessageDialog(null, "Registration successful!", "Information message", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Manager added!", "Information message", JOptionPane.INFORMATION_MESSAGE);
 		return true;
 		
 	}

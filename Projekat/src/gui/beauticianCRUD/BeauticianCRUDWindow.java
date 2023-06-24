@@ -57,7 +57,7 @@ public class BeauticianCRUDWindow extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 	            if(table.getSelectedRow() != -1) {
 	               model.removeRow(table.getSelectedRow());
-	               JOptionPane.showMessageDialog(null, "Selected row deleted successfully!");
+	               JOptionPane.showMessageDialog(null, "Beautician removed!", "Information message", JOptionPane.INFORMATION_MESSAGE);
 	            }
 			}
 		});
@@ -69,8 +69,8 @@ public class BeauticianCRUDWindow extends JDialog {
 		modifyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedRow() != -1) {
-					//modifyBeauticianWindow = new ModifyBeauticianWindow(BeauticianCRUDWindow.this, table.getSelectedRow());
-					//modifyBeauticianWindow.setVisible(true);
+					modifyBeauticianWindow = new ModifyBeauticianWindow(BeauticianCRUDWindow.this, table.getSelectedRow());
+					modifyBeauticianWindow.setVisible(true);
 				}
 			}
 		});

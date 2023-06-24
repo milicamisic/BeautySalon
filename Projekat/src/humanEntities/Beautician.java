@@ -18,6 +18,14 @@ public class Beautician extends Worker{
 		this.trainedFor = trainedFor;
 	}
 	
+	public ArrayList<ServiceType> getSkills() {
+		return trainedFor;
+	}
+
+	public void setSkills(ArrayList<ServiceType> trainedFor) {
+		this.trainedFor = trainedFor;
+	}
+
 	public String toString() {
 		String str =  "Beautician [name=" + name + ", surname=" + surname + ", sex=" + sex
 						+ ", phoneNumber=" + phoneNumber + ", address=" + address + ", username=" + username + ", password="
