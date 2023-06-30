@@ -469,6 +469,7 @@ public class BeautySalon { //Singleton
 			if(s.getName().equals(service.getName()))
 				return false;
 		}
+		this.services.add(service);
 		return true;
 	}
 	

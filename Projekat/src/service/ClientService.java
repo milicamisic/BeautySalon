@@ -19,6 +19,18 @@ public class ClientService {
 	public ClientService() {
 		beautySalon = BeautySalon.getBeautySalon();
 	}
+	
+	public Client getClientByUsername(String username)
+	{
+		for(Client c : beautySalon.getClients())
+		{
+			if(c.getUsername().equals(username))
+			{
+				return c;
+			}
+		}
+		return null;
+	}
 
 	public void updateMoneySpentScheduled(Client client, Service service) {
 		if(client.hasLoyaltyCard())

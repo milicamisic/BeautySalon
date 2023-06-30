@@ -4,10 +4,10 @@ import pisanje.ISerializable;
 
 public class Service implements ISerializable{
 	
-	String name;
-	ServiceType type;
-	int durationInMinutes;
-	double price;
+	private String name;
+	private ServiceType type;
+	private int durationInMinutes;
+	private double price;
 	
 	public Service(String name, ServiceType type, int durationInMinutes, double price) {
 		super();

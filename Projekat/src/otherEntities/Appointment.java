@@ -81,6 +81,31 @@ public class Appointment implements ISerializable{
 
 
 	public String toLine() {
-		return Integer.toString(id) + "|" + beautician.getUsername() + "|" + client.getUsername() + "|" + timeslot.toLine() + "|" + service.name + "|" + service.type.getType() + "|" + Integer.toString(service.durationInMinutes) + "|" + Double.toString(service.price) + "|" + status.toString();
+		return Integer.toString(id) + "|" + beautician.getUsername() + "|" + client.getUsername() + "|" + timeslot.toLine() + "|" + service.getName() + "|" + service.getType().getType() + "|" + Integer.toString(service.getDurationInMinutes()) + "|" + Double.toString(service.getPrice()) + "|" + status.toString();
+	}
+	
+	public Object toCell(int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return id;
+		case 1:
+			return beautician.getUsername();
+		case 2:
+			return client.getUsername();
+		case 3:
+			return timeslot.toLine().split(";")[0].replace("T", " ");
+		case 4:
+			return service.getDurationInMinutes();
+		case 5:
+			return service.getName();
+		case 6:
+			return service.getType().getType();
+		case 7:
+			return service.getPrice();
+		case 8:
+			return status.toString();
+		default:
+			return "";
+		}
 	}
 }

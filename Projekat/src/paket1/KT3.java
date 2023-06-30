@@ -13,6 +13,7 @@ import humanEntities.Sex;
 import otherEntities.Appointment;
 import otherEntities.Service;
 import otherEntities.ServiceType;
+import pisanje.MyWriter;
 import service.AppointmentService;
 import service.BeauticianService;
 import service.ClientService;
@@ -103,7 +104,6 @@ public class KT3 {
 		// 6. Spa pedikir. Trajanje 45 minuta. Tip tretmana: pedikir. Cena: 1600
 		Service service6 = new Service("Spa pedikir", new ServiceType("pedikir"), 45, 1600.0);
 		managerService.addService(service6);
-		
 		// Milica Milić vrši online zakazivanje francuskog manikira i bira kozmetičara 3 u terminu 10.6.2023, 18:00h.
 		clientService.makeAppointment(client1, beautician3, service3, LocalDateTime.of(2023, Month.JUNE, 10, 18, 0));
 		
@@ -219,6 +219,22 @@ public class KT3 {
 			System.out.println("Username: " + b.getUsername() + ", Bonus: " + b.getBonus());
 		}
 		
+		MyWriter appointmentWriter = new MyWriter("src/data/appointments3");
+		//appointmentWriter.write(beautySalon.getAppointments());
+		
+		MyWriter clientWriter = new MyWriter("src/data/clients3");
+		//clientWriter.write(beautySalon.getClients());
+		
+		MyWriter beauticianWriter = new MyWriter("src/data/beauticians3");
+		//beauticianWriter.write(beautySalon.getBeauticians());
+		
+		MyWriter serviceTypeWriter = new MyWriter("src/data/service_types3");
+		//serviceTypeWriter.write(beautySalon.getServiceTypes());
+		
+		MyWriter serviceWriter = new MyWriter("src/data/services3");
+		//serviceWriter.write(beautySalon.getServices());
+		
+		//System.out.println(beautySalon.getServices());
 	}
 
 }

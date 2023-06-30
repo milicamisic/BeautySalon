@@ -17,9 +17,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import gui.beauticianCRUD.BeauticianCRUDWindow;
-import gui.clientCRUD.ClientCRUDWindow;
-import gui.managerCRUD.ManagerCRUDWindow;
+import gui.managerView.appointmentCRUD.AppointmentCRUDWindow;
+import gui.managerView.beauticianCRUD.BeauticianCRUDWindow;
+import gui.managerView.clientCRUD.ClientCRUDWindow;
+import gui.managerView.managerCRUD.ManagerCRUDWindow;
+import gui.managerView.receptionistCRUD.ReceptionistCRUDWindow;
 import humanEntities.Role;
 import humanEntities.Sex;
 import service.UserService;
@@ -69,7 +71,9 @@ public class InitialWindow extends JFrame{
 	
 	ManagerCRUDWindow managerCRUDWindow;
 	BeauticianCRUDWindow beauticianCRUDWindow;
+	ReceptionistCRUDWindow receptionistCRUDWindow;
 	ClientCRUDWindow clientCRUDWindow;
+	AppointmentCRUDWindow appointmentCRUDWindow;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -322,6 +326,13 @@ public class InitialWindow extends JFrame{
 		viewBeauticiansButton.setBounds(110, 169, 195, 58);
 		managerPanel.add(viewBeauticiansButton);
 		
+		viewReceptionistsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				receptionistCRUDWindow = new ReceptionistCRUDWindow(InitialWindow.this);
+				receptionistCRUDWindow.setVisible(true);
+			}
+		});
+		
 		viewReceptionistsButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewReceptionistsButton.setBounds(110, 264, 195, 58);
 		managerPanel.add(viewReceptionistsButton);
@@ -334,8 +345,14 @@ public class InitialWindow extends JFrame{
 		});
 		viewClientsButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewClientsButton.setBounds(110, 358, 195, 58);
-		
 		managerPanel.add(viewClientsButton);
+		viewAppointmentsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				appointmentCRUDWindow = new AppointmentCRUDWindow(InitialWindow.this);
+				appointmentCRUDWindow.setVisible(true);
+			}
+		});
+		
 		viewAppointmentsButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		viewAppointmentsButton.setBounds(110, 451, 195, 58);
 		

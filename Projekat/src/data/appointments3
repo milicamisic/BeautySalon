@@ -1,0 +1,6 @@
+0|jovana|milica|2023-06-10T18:00;2023-06-10T18:50|Francuski manikir|manikir|50|1500.0|COMPLETED
+1|zika|milica|2023-06-11T09:00;2023-06-11T09:45|Spa pedikir|pedikir|45|1600.0|CLIENT_CANCELED
+2|sima|mika|2023-06-12T08:00;2023-06-12T09:15|Sportska masaža|masaža|75|2500.0|SALON_CANCELED
+3|zika|mika|2023-06-13T19:00;2023-06-13T19:45|Relaks masaža|masaža|45|2000.0|DIDNT_SHOW_UP
+4|sima|milica|2023-06-14T09:00;2023-06-14T10:20|Gel lak|manikir|80|1600.0|SCHEDULED
+5|zika|mika|2023-06-14T09:00;2023-06-14T10:30|Spa manikir|manikir|90|2000.0|COMPLETED

@@ -2,7 +2,6 @@ package service;
 
 import humanEntities.Beautician;
 import otherEntities.Appointment;
-import otherEntities.AppointmentStatus;
 import paket1.BeautySalon;
 
 public class BeauticianService {
@@ -10,6 +9,18 @@ public class BeauticianService {
 	
 	public BeauticianService() {
 		this.beautySalon = BeautySalon.getBeautySalon();
+	}
+	
+	public Beautician getBeauticianByUsername(String username)
+	{
+		for(Beautician b : beautySalon.getBeauticians())
+		{
+			if(b.getUsername().equals(username))
+			{
+				return b;
+			}
+		}
+		return null;
 	}
 	
 	public void viewSchedule(Beautician beautician) {

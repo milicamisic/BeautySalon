@@ -99,6 +99,7 @@ public class Beautician extends Worker{
 		}
 	}
 
+	@Override
 	public Object toCell(int columnIndex) {
 		switch (columnIndex) {
 		case 0:
