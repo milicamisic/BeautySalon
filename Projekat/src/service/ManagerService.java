@@ -85,16 +85,29 @@ public class ManagerService {
 	public void viewClients() {}
 	
 	// CRUD for appointments
-	public void addAppointment(Appointment a) {
-		beautySalon.addAppointment(a);
+	public int addAppointment(Appointment appointment) 
+	{
+		ClientService clientService = new ClientService();
+		
+		int result = beautySalon.addAppointment(appointment);
+		if(result == 0)
+			clientService.updateMoneySpentScheduled(appointment.getClient(), appointment.getService());
+		
+		return result;
 	}
 	
-	public boolean removeAppointment(int id) {
-		return beautySalon.removeAppointment(id);
+	public boolean removeAppointment(Appointment appointment) 
+	{	
+		ReceptionistService receptionistService = new ReceptionistService();
+		boolean removed = beautySalon.removeAppointment(appointment);
+		if(removed == true)
+			receptionistService.updateMoneySpentCancelled(appointment.getClient(), appointment.getService());
+		return removed;
 	}
 	
-	public boolean modifyAppointment(Appointment a) {
-		return beautySalon.modifyAppointment(a);
+	public int modifyAppointment(Appointment a) {
+		removeAppointment(a); // we know that this appointment exists because it is being modified
+		return addAppointment(a);
 	}
 
 	public void viewAppointments() {

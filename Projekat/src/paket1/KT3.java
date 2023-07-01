@@ -105,13 +105,13 @@ public class KT3 {
 		Service service6 = new Service("Spa pedikir", new ServiceType("pedikir"), 45, 1600.0);
 		managerService.addService(service6);
 		// Milica Milić vrši online zakazivanje francuskog manikira i bira kozmetičara 3 u terminu 10.6.2023, 18:00h.
-		clientService.makeAppointment(client1, beautician3, service3, LocalDateTime.of(2023, Month.JUNE, 10, 18, 0));
+		//clientService.makeAppointment(client1, beautician3, service3, LocalDateTime.of(2023, Month.JUNE, 10, 18, 0));
 		
 		// Milica Milić vrši zakazivanje spa pedikira preko recepcionera i bira kozmetičara 2 u terminu 11.06.2023, 09:00h. 
 		receptionistService.makeAppointment(client1, beautician2, service6, LocalDateTime.of(2023, Month.JUNE, 11, 9, 0));
 		
 		// Mika Mikić vrši online zakazivanje sportske masaže i bira kozmetičara 1 u terminu 12.6.2023, 08:00h.
-		clientService.makeAppointment(client2, beautician1, service2, LocalDateTime.of(2023, Month.JUNE, 12, 8, 0));
+		//clientService.makeAppointment(client2, beautician1, service2, LocalDateTime.of(2023, Month.JUNE, 12, 8, 0));
 		
 		// Mika vrši zakazivanje relaks masaže preko recepcionera i bira kozmetičara 2 u terminu 13.06.2023, 19:00h.
 		receptionistService.makeAppointment(client2, beautician2, service1, LocalDateTime.of(2023, Month.JUNE, 13, 19, 0));
@@ -119,12 +119,8 @@ public class KT3 {
 		// Mika pokušava da izvrši zakazivanje francuskog manikira i bira kozmetičara 3 u terminu 10.6.2023, 18:00h, ali neuspešno jer je taj termin 
 		// i kozmetičar nisu dostupni. Prikazati poruku da je kreiranje termina neuspešno.
 		// ovo ce biti neki message box kad bude bio gui
-		boolean isSuccessful = clientService.makeAppointment(client2, beautician3, service3, LocalDateTime.of(2023, Month.JUNE, 10, 18, 0));
-		if(!isSuccessful) {
-			System.out.println("Appointment creation unsuccessful!");
-		} else {
-			System.out.println("Appointment creation successful!");
-		}
+		//boolean isSuccessful = clientService.makeAppointment(client2, beautician3, service3, LocalDateTime.of(2023, Month.JUNE, 10, 18, 0));
+		
 		
 		// Za kozmetičara 2 prikazati uvid u kozmetičke tretmane koji su mu dodeljeni i raspored.
 		beauticianService.viewSchedule(beautician2);
@@ -177,10 +173,10 @@ public class KT3 {
 		// stanje na kartici lojalnosti (koliko je klijent potršio novca ukupno) i bilans novca salona.
 		
 		// Milica Milić vrši zakazivanje gel laka preko online i bira kozmetičara 1 u terminu 14.06.2023, 09:00h
-		clientService.makeAppointment(client1, beautician1, service4, LocalDateTime.of(2023,  Month.JUNE, 14, 9, 0));
+		//clientService.makeAppointment(client1, beautician1, service4, LocalDateTime.of(2023,  Month.JUNE, 14, 9, 0));
 		
 		// Mika Mikić vrši online zakazivanje spa manikira i ne želi da bira kozmetičara u terminu 14.6.2023, 09:00h.
-		clientService.makeAppointment(client2, service5, LocalDateTime.of(2023,  Month.JUNE, 14, 9, 0));
+		//clientService.makeAppointment(client2, service5, LocalDateTime.of(2023,  Month.JUNE, 14, 9, 0));
 		
 		// Prikazati da je tretman uspešno izvršen, stanje na kartici lojalnosti (koliko 
 		// je klijent potršio novca ukupno) i bilans na računu salona.

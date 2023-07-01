@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-import humanEntities.Beautician;
 import humanEntities.Client;
 import otherEntities.Appointment;
 import otherEntities.AppointmentStatus;
@@ -48,35 +47,11 @@ public class ClientService {
 		beautySalon.modifyClient(client);
 	}
 	
-	public boolean makeAppointment(Client client, Beautician beautician, Service service, LocalDateTime dateTime) {
-		Timeslot timeslot = new Timeslot(dateTime, dateTime.plusMinutes(service.getDurationInMinutes()));
-		for(Appointment a : beautySalon.getAppointments()) {
-			if(TimeslotService.areOverlaping(a.getTimeslot(), timeslot)) {
-				if(beautician.equals(a.getBeautician()) || client.equals(a.getClient()))
-					return false;
-			}
-		}
-		Appointment appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED);
-		beautySalon.addAppointment(appointment);
-		updateMoneySpentScheduled(client, service);
-		return true;
-	}
-	
-	public boolean makeAppointment(Client client, Service service, LocalDateTime dateTime) {
-		Timeslot timeslot = new Timeslot(dateTime, dateTime.plusMinutes(service.getDurationInMinutes()));
-		for(Appointment a : beautySalon.getAppointments()) {
-			if(TimeslotService.areOverlaping(a.getTimeslot(), timeslot)) {
-				if(client.equals(a.getClient()))
-					return false;
-			}
-		}
-		Beautician beautician = beautySalon.getAvailableBeautician(timeslot);
-		if(beautician == null)
-			return false;
-		Appointment appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED);
-		beautySalon.addAppointment(appointment);
-		updateMoneySpentScheduled(client, service);
-		return true;
+	public int makeAppointment(Appointment appointment) {
+		int result = beautySalon.addAppointment(appointment);
+		if(result == 0)
+			updateMoneySpentScheduled(appointment.getClient(), appointment.getService());
+		return result;
 	}
 
 	public ArrayList<Appointment> getAppointments(Client client) {
@@ -102,5 +77,34 @@ public class ClientService {
 			if(a.getClient().equals(client) && a.getTimeslot().getEndTime().isBefore(LocalDateTime.now()))
 				System.out.println(a);
 		}
+	}
+	
+	public ArrayList<Appointment> getScheduledAppointments(Client client)
+	{
+		ArrayList<Appointment> scheduledAppointments = new ArrayList<Appointment>();
+		for(Appointment a : beautySalon.getAppointments())
+		{
+			if(a.getClient().equals(client) && a.getStatus().equals(AppointmentStatus.SCHEDULED))
+			{
+				scheduledAppointments.add(a);
+			}
+		}
+		return scheduledAppointments;
+	}
+
+	public boolean isAvailable(Client client, Timeslot timeslot) 
+	{
+		ArrayList<Appointment> scheduledAppointments = getScheduledAppointments(client);
+		
+		if(scheduledAppointments == null)
+			return true;
+		for(Appointment a : scheduledAppointments)
+		{
+			if(TimeslotService.areOverlaping(a.getTimeslot(), timeslot))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

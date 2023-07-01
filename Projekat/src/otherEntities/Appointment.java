@@ -24,6 +24,15 @@ public class Appointment implements ISerializable{
 		this.status = status;
 	}
 	
+	public Appointment(Client client, Timeslot timeslot, Service service, AppointmentStatus status)
+	{
+		super();
+		this.client = client;
+		this.timeslot = timeslot;
+		this.service = service;
+		this.status = status;
+	}
+	
 	public int getId() {
 		return id;
 	}

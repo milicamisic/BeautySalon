@@ -4,12 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import humanEntities.Beautician;
-import humanEntities.Client;
 import otherEntities.Appointment;
-import otherEntities.AppointmentStatus;
-import otherEntities.Service;
-import otherEntities.Timeslot;
 import paket1.BeautySalon;
 import service.ManagerService;
 
@@ -71,7 +66,7 @@ public class AppointmentModel extends AbstractTableModel {
 		Appointment a = appointments.get(rowIndex);
 		
 		ManagerService managerService = new ManagerService();
-		managerService.removeAppointment(a.getId());
+		managerService.removeAppointment(a);
 		
 		fireTableDataChanged();
 	}

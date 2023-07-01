@@ -15,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import humanEntities.Beautician;
-import humanEntities.Manager;
 import humanEntities.Sex;
 import otherEntities.ServiceType;
 import paket1.BeautySalon;
@@ -127,6 +126,7 @@ public class ModifyBeauticianWindow extends JDialog {
 		JComboBox sexComboBox = new JComboBox(sexStrings);
 		sexComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		sexComboBox.setBounds(679, 255, 144, 48);
+		sexComboBox.setSelectedItem(beauticianForModification.getSex().toString());
 		getContentPane().add(sexComboBox);
 		
 		JLabel lblBasePay = new JLabel("Base Pay:");

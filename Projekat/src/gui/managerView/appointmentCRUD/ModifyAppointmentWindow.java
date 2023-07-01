@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -35,11 +38,21 @@ public class ModifyAppointmentWindow extends JDialog {
 	private static final long serialVersionUID = 6942042170462061710L;
 	private JTextField dateField;
 	private JTextField timeField;
+	private JComboBox<String> beauticianComboBox;
+	private JComboBox<String> serviceComboBox;
 	private BeautySalon beautySalon;
+	private BeauticianService beauticianService;
 
 	public ModifyAppointmentWindow(AppointmentCRUDWindow parent, int rowIndex) {
 		super(parent, true);
 		beautySalon = BeautySalon.getBeautySalon();
+		beauticianService = new BeauticianService();
+		
+		Appointment appointmentForModification = beautySalon.getAppointments().get(rowIndex);
+		LocalDateTime dateTime = appointmentForModification.getTimeslot().getStartTime();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.M.y H:m");
+        String[] dateTimeString = dateTime.format(formatter).split(" ");
 		
 		setMinimumSize(new Dimension(980, 455));
 		setResizable(false);
@@ -48,62 +61,63 @@ public class ModifyAppointmentWindow extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		getContentPane().setLayout(null);
 		
-		JLabel lblSurname = new JLabel("Beautician:");
-		lblSurname.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblSurname.setBounds(62, 66, 127, 48);
-		getContentPane().add(lblSurname);
+		JLabel beauticianLabel = new JLabel("Beautician:");
+		beauticianLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		beauticianLabel.setBounds(62, 66, 127, 48);
+		getContentPane().add(beauticianLabel);
 		
-		JLabel lblUsername = new JLabel("Client:");
-		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblUsername.setBounds(62, 160, 127, 48);
-		getContentPane().add(lblUsername);
+		JLabel clientLabel = new JLabel("Client:");
+		clientLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		clientLabel.setBounds(62, 160, 127, 48);
+		getContentPane().add(clientLabel);
 		
 		JLabel lblPassword = new JLabel("Date:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblPassword.setBounds(480, 66, 127, 48);
+		lblPassword.setBounds(552, 66, 127, 48);
 		getContentPane().add(lblPassword);
 		
-		dateField = new JTextField();
+		dateField = new JTextField(dateTimeString[0]);
 		dateField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		dateField.setColumns(10);
-		dateField.setBounds(679, 67, 144, 48);
+		dateField.setBounds(645, 67, 161, 48);
 		getContentPane().add(dateField);
-		
-		JLabel lblAddress = new JLabel("Service:");
-		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblAddress.setBounds(62, 257, 127, 48);
-		getContentPane().add(lblAddress);
 		
 		JLabel lblEducationLevel = new JLabel("Time:");
 		lblEducationLevel.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		lblEducationLevel.setBounds(480, 162, 189, 48);
+		lblEducationLevel.setBounds(552, 160, 189, 48);
 		getContentPane().add(lblEducationLevel);
 		
-		timeField = new JTextField();
+		timeField = new JTextField(dateTimeString[1]);
 		timeField.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		timeField.setColumns(10);
-		timeField.setBounds(679, 163, 144, 48);
+		timeField.setBounds(645, 161, 161, 48);
 		getContentPane().add(timeField);
-		
-		ArrayList<String> services = new ArrayList<String>();
-		for(Service s :  beautySalon.getServices())
-		{
-			services.add(s.getName());
-		}
-		JComboBox serviceComboBox = new JComboBox(services.toArray());
-		serviceComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		serviceComboBox.setBounds(238, 257, 167, 48);
-		getContentPane().add(serviceComboBox);
 		
 		ArrayList<String> beauticianUsernames = new ArrayList<String>();
 		for(Beautician b : beautySalon.getBeauticians())
 		{
 			beauticianUsernames.add(b.getUsername());
 		}
-		JComboBox beauticianComboBox = new JComboBox(beauticianUsernames.toArray());
+		beauticianComboBox = new JComboBox(beauticianUsernames.toArray());
 		beauticianComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		beauticianComboBox.setBounds(238, 66, 167, 48);
+		beauticianComboBox.setBounds(212, 66, 203, 48);
+		beauticianComboBox.setSelectedItem(appointmentForModification.getBeautician().getUsername());
+		beauticianComboBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    Beautician beautician = beauticianService.getBeauticianByUsername((String) beauticianComboBox.getSelectedItem());
+                    
+                    DefaultComboBoxModel<String> newModel = new DefaultComboBoxModel<>();
+                    for(Service s : beauticianService.getBeauticianServices(beautician))
+                    {
+                    	newModel.addElement(s.getName());
+                    }
+                    serviceComboBox.setModel(newModel);
+                }
+            }
+        });
 		getContentPane().add(beauticianComboBox);
+		
 		
 		ArrayList<String> clientUsernames = new ArrayList<String>();
 		for(Client c : beautySalon.getClients())
@@ -112,15 +126,34 @@ public class ModifyAppointmentWindow extends JDialog {
 		}
 		JComboBox clientComboBox = new JComboBox(clientUsernames.toArray());
 		clientComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		clientComboBox.setBounds(238, 160, 167, 48);
+		clientComboBox.setBounds(212, 160, 203, 48);
+		clientComboBox.setSelectedItem(appointmentForModification.getClient().getUsername());
 		getContentPane().add(clientComboBox);
 		
-		JButton addButton = new JButton("Add");
-		addButton.addActionListener(new ActionListener() 
+		JLabel lblAddress = new JLabel("Service:");
+		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblAddress.setBounds(62, 257, 127, 48);
+		getContentPane().add(lblAddress);
+		
+		
+		ArrayList<String> servicesString = new ArrayList<String>();
+		ArrayList<Service> services = beauticianService.getBeauticianServices(beautySalon.getBeauticians().get(0));
+		
+		for(Service s :  services)
+		{
+			servicesString.add(s.getName());
+		}
+		serviceComboBox = new JComboBox(servicesString.toArray());
+		serviceComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		serviceComboBox.setBounds(212, 257, 281, 48);
+		serviceComboBox.setSelectedItem(appointmentForModification.getService().getName());
+		getContentPane().add(serviceComboBox);
+		
+		JButton modifyButton = new JButton("Modify");
+		modifyButton.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				BeauticianService beauticianService = new BeauticianService();
 				ClientService clientService = new ClientService();
 				ServiceService serviceService = new ServiceService();
 				
@@ -131,31 +164,41 @@ public class ModifyAppointmentWindow extends JDialog {
 				String dateString = dateField.getText();
 				String timeString = timeField.getText();
 				
-				boolean inputValid = valideFields(beautician, client, service, dateString, timeString);
+				boolean inputValid = valideFields(dateString, timeString);
 				
 				if(inputValid) 
 				{
+					// ovde pokusavamo da napravimo appointment i izbacujemo odgovarajucu gresku ako nesto ne valja
 					String dateTimeString = dateString + " " + timeString;
-					DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+					DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.M.y H:m");
 					
 					LocalDateTime startTime = LocalDateTime.parse(dateTimeString, dateFormatter);
 					LocalDateTime endTime = startTime.plusMinutes(service.getDurationInMinutes());
 					
 					Timeslot timeslot = new Timeslot(startTime, endTime);
 					
-					Appointment appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED);
+					Appointment appointment = new Appointment(appointmentForModification.getId(), beautician, client, timeslot, service, AppointmentStatus.SCHEDULED);
+					
 					ManagerService managerService = new ManagerService();
-					managerService.addAppointment(appointment);
+					int result = managerService.modifyAppointment(appointment);
 					
-					parent.refreshTable();
-					
-					dispose();
+					switch(result) 
+					{
+						case -3: JOptionPane.showMessageDialog(null, "Client is not available at that time!", "Error message", JOptionPane.ERROR_MESSAGE); break;
+						case -2: JOptionPane.showMessageDialog(null, "No available beauticians at that time!", "Error message", JOptionPane.ERROR_MESSAGE); break;
+						case -1: JOptionPane.showMessageDialog(null, "Beautician is not available at that time!", "Error message", JOptionPane.ERROR_MESSAGE); break;
+						default: 
+							JOptionPane.showMessageDialog(null, "Appointment modified!", "Information message", JOptionPane.INFORMATION_MESSAGE);
+							parent.refreshTable();
+							dispose();
+							break;
+					}
 				}
 			}
 		});
-		addButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		addButton.setBounds(579, 356, 156, 51);
-		getContentPane().add(addButton);
+		modifyButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		modifyButton.setBounds(579, 356, 156, 51);
+		getContentPane().add(modifyButton);
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
@@ -168,7 +211,7 @@ public class ModifyAppointmentWindow extends JDialog {
 		getContentPane().add(cancelButton);
 	}
 	
-	private boolean valideFields(Beautician beautician, Client client, Service service, String dateString, String timeString)
+	private boolean valideFields(String dateString, String timeString)
 	{
 		if(dateString.trim().isEmpty() || timeString.trim().isEmpty()) 
 		{
@@ -176,7 +219,7 @@ public class ModifyAppointmentWindow extends JDialog {
 			return false;
 		}
 		
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.M.y");
 		
 		try
 		{
@@ -188,7 +231,7 @@ public class ModifyAppointmentWindow extends JDialog {
 			return false;
 		}
 		
-		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:m");
 
         try 
         {
@@ -199,9 +242,7 @@ public class ModifyAppointmentWindow extends JDialog {
         	JOptionPane.showMessageDialog(null, "Time must be in format \"hour:minute\"!", "Error message", JOptionPane.ERROR_MESSAGE);
 			return false;
         }
-		
-		JOptionPane.showMessageDialog(null, "Appointment added!", "Information message", JOptionPane.INFORMATION_MESSAGE);
-		return true;
-		
+        
+        return true;
 	}
 }

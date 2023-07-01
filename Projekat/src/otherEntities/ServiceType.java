@@ -19,7 +19,7 @@ public class ServiceType implements ISerializable {
 	
 	@Override
 	public String toString() {
-		return "AppointmentType [type=" + type + "]";
+		return "ServiceType [type=" + type + "]";
 	}
 
 	@Override

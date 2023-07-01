@@ -50,6 +50,13 @@ public class Service implements ISerializable{
 		this.price = price;
 	}
 
+	public boolean equals(Service other)
+	{
+		if(this.getName().equals(other.getName()))
+			return true;
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		return "Service [name=" + name + ", type=" + type.getType() + ", durationInMinutes=" + Integer.toString(durationInMinutes) + ", price="

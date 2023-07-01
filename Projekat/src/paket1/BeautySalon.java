@@ -26,6 +26,8 @@ import otherEntities.Revenue;
 import otherEntities.Service;
 import otherEntities.ServiceType;
 import otherEntities.Timeslot;
+import service.BeauticianService;
+import service.ClientService;
 import service.TimeslotService;
 import storage.BeautySalonStorage;
 
@@ -167,12 +169,20 @@ public class BeautySalon { //Singleton
 		return appointments.get(size - 1).getId() + 1;
 	}
 	
-	public Beautician getAvailableBeautician(Timeslot timeslot) {
+	public Beautician getAvailableBeautician(Appointment appointment) {
+		BeauticianService beauticianService = new BeauticianService();
 		ArrayList<Beautician> availableBeauticians = new ArrayList<Beautician>();
-		availableBeauticians.addAll(this.beauticians);
 		
-		for(Appointment a : this.appointments) {
-			if(TimeslotService.areOverlaping(timeslot,a.getTimeslot())) {
+		for(Beautician b : beautySalon.beauticians)
+		{
+			if(beauticianService.canPerform(b, appointment.getService()))
+			{
+				availableBeauticians.add(b);
+			}
+		}
+		
+		for(Appointment a : appointments) {
+			if(TimeslotService.areOverlaping(appointment.getTimeslot(), a.getTimeslot())) {
 				availableBeauticians.remove(a.getBeautician());
 			}
 		}
@@ -501,17 +511,54 @@ public class BeautySalon { //Singleton
 		this.appointments = appointments;
 	}
 	
-	public void addAppointment(Appointment appointment) {
+	public int addAppointment(Appointment appointment) {
+		
+		ClientService clientService = new ClientService();
+		BeauticianService beauticianService = new BeauticianService();
+		Client client = appointment.getClient();
+		Beautician beautician = appointment.getBeautician();
+		Timeslot timeslot = appointment.getTimeslot();
+		
+		if(!clientService.isAvailable(client, timeslot))
+		{
+			return -3;
+		}
+		else if(beautician == null)
+		{
+			beautician = getAvailableBeautician(appointment);
+			if(beautician == null)
+				return -2;
+		} 
+		else 
+		{
+			if(!beauticianService.isAvailable(beautician, timeslot))
+				return -1;
+		}
+		appointment.setBeautician(beautician);
 		appointment.setId(getNextAppointmentId());
 		this.appointments.add(appointment);
-		Revenue r = new Revenue("Appointment " + appointment.getId(), appointment.getService().getPrice(), LocalDate.now());
-		addRevenue(r);
+		
+		double price = appointment.getService().getPrice();
+		if(client.hasLoyaltyCard())
+			price *= 0.9;
+		Revenue revenue = new Revenue("Appointment " + appointment.getId(), price, LocalDate.now());
+		addRevenue(revenue);
+		
+		return 0;
 	}
 	
-	public boolean removeAppointment(int id) {
+	public boolean removeAppointment(Appointment appointment) {
 		for(int i = 0; i < this.appointments.size(); i++) {
-			if(this.appointments.get(i).getId() == id) {
+			if(this.appointments.get(i).getId() == appointment.getId()) {
 				this.appointments.remove(i);
+				
+				double price = appointment.getService().getPrice();
+				if(appointment.getClient().hasLoyaltyCard())
+					price *= 0.9;
+				
+				Expense expense = new Expense("Appointment " + appointment.getId(), price, LocalDate.now());
+				addExpense(expense);
+				
 				return true;
 			}
 		}
