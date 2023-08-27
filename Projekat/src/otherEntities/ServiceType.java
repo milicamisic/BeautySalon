@@ -25,5 +25,14 @@ public class ServiceType implements ISerializable {
 	@Override
 	public String toLine() {
 		return type;
-	}	
+	}
+	
+	public Object toCell(int columnIndex) {
+		switch(columnIndex) {
+		case 0:
+			return type;
+		default:
+			return "";
+		}
+	}
 }

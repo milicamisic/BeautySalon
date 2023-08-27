@@ -27,6 +27,14 @@ public class Beautician extends Worker{
 	public void addSkill(ServiceType st) {
 		this.trainedFor.add(st);
 	}
+	public boolean hasSkill(ServiceType skill) {
+		for(ServiceType st: trainedFor) {
+			if(st.getType().equals(skill.getType())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static Beautician findBeauticianByUsername(String username) {
 		BeauticianReader br = new BeauticianReader("src/data/beauticians3");

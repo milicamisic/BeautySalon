@@ -23,7 +23,7 @@ public class UserService {
 	
 	public UserService() {}
 	
-	public static Role login(String username, String pass) {
+	public static Role login(String username, char[] pass) {
 		Role role = null;
 		try {
 			BufferedReader br = new BufferedReader(
@@ -34,7 +34,7 @@ public class UserService {
 			while((line = br.readLine()) != null) {
 				String[] tokens = line.split("\\|");
 				
-				if(tokens[0].equals(username) && tokens[1].equals(pass)) {
+				if(tokens[0].equals(username) && isPassOk(pass, tokens[1])) {
 					role = Role.valueOf(tokens[2]);
 				}
 			}
@@ -47,7 +47,21 @@ public class UserService {
 			e.printStackTrace();
 		}
 		
+		if(role != null) {
+			User currentUser = getUserByUsername(username);
+			beautySalon.setCurrentUser(currentUser);
+		}
+		
 		return role;
+	}
+	
+	private static boolean isPassOk(char[] pass, String userPassword) {
+		if(pass.length != userPassword.length()) return false;
+		
+		for(int i = 0; i < pass.length; i++) {
+			if(pass[i] != userPassword.charAt(i)) return false;
+		}
+		return true;
 	}
 	
 	public static boolean isAlpha(String name) {
@@ -91,5 +105,17 @@ public class UserService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static User getUserByUsername(String username)
+	{
+		for(User u : beautySalon.getUsers())
+		{
+			if(u.getUsername().equals(username))
+			{
+				return u;
+			}
+		}
+		return null;
 	}
 }

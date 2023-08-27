@@ -36,11 +36,13 @@ import service.ServiceService;
 public class AddAppointmentWindow extends JDialog {
 	
 	private static final long serialVersionUID = 6942042170462061710L;
+	
 	private JTextField dateField;
 	private JTextField timeField;
 	private JComboBox<String> beauticianComboBox;
 	private JComboBox<String> serviceComboBox;
 	private boolean autoBeautician = true;
+	
 	private BeautySalon beautySalon;
 	private BeauticianService beauticianService;
 
@@ -165,7 +167,7 @@ public class AddAppointmentWindow extends JDialog {
 				String dateString = dateField.getText();
 				String timeString = timeField.getText();
 				
-				boolean inputValid = valideFields(dateString, timeString);
+				boolean inputValid = validateFields(dateString, timeString);
 				
 				if(inputValid) 
 				{
@@ -180,9 +182,9 @@ public class AddAppointmentWindow extends JDialog {
 					
 					Appointment appointment;
 					if(autoBeautician)
-						appointment = new Appointment(client, timeslot, service, AppointmentStatus.SCHEDULED);
+						appointment = new Appointment(client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
 					else
-						appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED);
+						appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
 					
 					ManagerService managerService = new ManagerService();
 					int result = managerService.addAppointment(appointment);
@@ -216,7 +218,7 @@ public class AddAppointmentWindow extends JDialog {
 		getContentPane().add(cancelButton);
 	}
 	
-	private boolean valideFields(String dateString, String timeString)
+	private boolean validateFields(String dateString, String timeString)
 	{
 		if(dateString.trim().isEmpty() || timeString.trim().isEmpty()) 
 		{
@@ -224,7 +226,7 @@ public class AddAppointmentWindow extends JDialog {
 			return false;
 		}
 		
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.M.y");
 		
 		try
 		{
@@ -236,7 +238,7 @@ public class AddAppointmentWindow extends JDialog {
 			return false;
 		}
 		
-		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:m");
 
         try 
         {

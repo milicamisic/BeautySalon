@@ -43,7 +43,7 @@ public class ReceptionistService {
 					return false;
 			}
 		}
-		Appointment appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED);
+		Appointment appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
 		beautySalon.addAppointment(appointment);
 		updateMoneySpentScheduled(client, service);
 		return true;

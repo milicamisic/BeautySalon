@@ -14,15 +14,17 @@ import humanEntities.Client;
 import otherEntities.Appointment;
 import otherEntities.AppointmentStatus;
 import otherEntities.Service;
-import otherEntities.ServiceType;
 import otherEntities.Timeslot;
+import service.ServiceService;
 
 public class AppointmentReader {
 	
 	String fileName;
+	ServiceService serviceService;
 	
 	public AppointmentReader(String fileName) {
 		this.fileName = fileName;
+		this.serviceService = new ServiceService();
 	}
 	
 	public ArrayList<Appointment> loadAppointments() {
@@ -42,10 +44,11 @@ public class AppointmentReader {
 				Client c = Client.findClientByUsername(tokens[2]);
 				String[] ts = tokens[3].split(";");
 				Timeslot t = new Timeslot(LocalDateTime.parse(ts[0]), LocalDateTime.parse(ts[1]));
-				Service service = new Service(tokens[4], new ServiceType(tokens[5]), Integer.parseInt(tokens[6]), Double.parseDouble(tokens[7]));
-				AppointmentStatus status = AppointmentStatus.valueOf(tokens[8]);
+				Service service = serviceService.getServiceByName(tokens[4]);
+				AppointmentStatus status = AppointmentStatus.valueOf(tokens[5]);
+				double price = Double.parseDouble(tokens[6]);
 				
-				Appointment a = new Appointment(id, b, c, t, service, status);
+				Appointment a = new Appointment(id, b, c, t, service, status,price);
 				appointments.add(a);
 			}
 			br.close();

@@ -67,4 +67,19 @@ public class Service implements ISerializable{
 	public String toLine() {
 		return name + "|" + type.getType() + "|" + Integer.toString(durationInMinutes) + "|" + Double.toString(price);
 	}
+
+	public Object toCell(int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return name;
+		case 1:
+			return type.getType();
+		case 2:
+			return durationInMinutes;
+		case 3:
+			return price;
+		default:
+			return "";
+		}
+	}
 }

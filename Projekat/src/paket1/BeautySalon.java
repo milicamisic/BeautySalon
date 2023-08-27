@@ -28,7 +28,6 @@ import otherEntities.ServiceType;
 import otherEntities.Timeslot;
 import service.BeauticianService;
 import service.ClientService;
-import service.TimeslotService;
 import storage.BeautySalonStorage;
 
 public class BeautySalon { //Singleton
@@ -49,6 +48,7 @@ public class BeautySalon { //Singleton
 	private double loyaltyCardPrecondition;
 	private double balance;
 	private int completedAppointmentsForBonus;
+	private User currentUser;
 	
 	private ArrayList<User> users;
 	private ArrayList<Manager> managers;
@@ -167,28 +167,6 @@ public class BeautySalon { //Singleton
 			return 0;
 		}
 		return appointments.get(size - 1).getId() + 1;
-	}
-	
-	public Beautician getAvailableBeautician(Appointment appointment) {
-		BeauticianService beauticianService = new BeauticianService();
-		ArrayList<Beautician> availableBeauticians = new ArrayList<Beautician>();
-		
-		for(Beautician b : beautySalon.beauticians)
-		{
-			if(beauticianService.canPerform(b, appointment.getService()))
-			{
-				availableBeauticians.add(b);
-			}
-		}
-		
-		for(Appointment a : appointments) {
-			if(TimeslotService.areOverlaping(appointment.getTimeslot(), a.getTimeslot())) {
-				availableBeauticians.remove(a.getBeautician());
-			}
-		}
-		if(availableBeauticians.size() == 0)
-			return null;
-		return availableBeauticians.get(0);
 	}
 
 	public double getBalance() {
@@ -525,7 +503,7 @@ public class BeautySalon { //Singleton
 		}
 		else if(beautician == null)
 		{
-			beautician = getAvailableBeautician(appointment);
+			beautician = beauticianService.getAvailableBeautician(appointment);
 			if(beautician == null)
 				return -2;
 		} 
@@ -599,5 +577,13 @@ public class BeautySalon { //Singleton
 	public void addExpense(Expense expense) {
 		this.expenses.add(expense);
 		this.balance -= expense.getMoneyPaid();
+	}
+	
+	public User getCurrentUser() {
+		return this.currentUser;
+	}
+	
+	public void setCurrentUser(User user) {
+		this.currentUser = user;
 	}
 }

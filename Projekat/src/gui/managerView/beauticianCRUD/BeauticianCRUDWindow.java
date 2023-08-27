@@ -1,5 +1,6 @@
 package gui.managerView.beauticianCRUD;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,9 +10,6 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-
-import gui.InitialWindow;
-import java.awt.Dimension;
 
 public class BeauticianCRUDWindow extends JDialog {
 
@@ -24,8 +22,7 @@ public class BeauticianCRUDWindow extends JDialog {
 	AddBeauticianWindow addBeauticianWindow;
 	ModifyBeauticianWindow modifyBeauticianWindow;
 
-	public BeauticianCRUDWindow(InitialWindow parent) {
-		super(parent, true);
+	public BeauticianCRUDWindow() {
 		setMinimumSize(new Dimension(1040, 610));
 		setResizable(false);
 		

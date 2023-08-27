@@ -64,12 +64,16 @@ public class ClientService {
 		return clientAppointments;
 	}
 
-	public void cancelAppointment(Appointment appointment) {
-		appointment.setStatus(AppointmentStatus.CLIENT_CANCELED);
-		beautySalon.modifyAppointment(appointment);
-		updateMoneySpentCancelled(appointment.getClient(), appointment.getService());
-		Expense e = new Expense("ClientCancelled: Appointment " + appointment.getId(), 0.9*appointment.getService().getPrice(), LocalDate.now());
-		beautySalon.addExpense(e);
+	public boolean cancelAppointment(Appointment appointment) {
+		if(appointment.getStatus() == AppointmentStatus.SCHEDULED) {
+			appointment.setStatus(AppointmentStatus.CLIENT_CANCELED);
+			beautySalon.modifyAppointment(appointment);
+			updateMoneySpentCancelled(appointment.getClient(), appointment.getService());
+			Expense e = new Expense("ClientCancelled: Appointment " + appointment.getId(), 0.9*appointment.getService().getPrice(), LocalDate.now());
+			beautySalon.addExpense(e);	
+			return true;
+		}
+		return false;
 	}
 	
 	public void viewPastAppointments(Client client) {

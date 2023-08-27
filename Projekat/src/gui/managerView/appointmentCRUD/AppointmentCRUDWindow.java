@@ -5,14 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import gui.InitialWindow;
+import gui.managerView.ManagerMainWindow;
 
-public class AppointmentCRUDWindow extends JDialog {
+public class AppointmentCRUDWindow extends JFrame {
 
 	private static final long serialVersionUID = -4851142263147950673L;
 	
@@ -23,8 +23,7 @@ public class AppointmentCRUDWindow extends JDialog {
 	AddAppointmentWindow addAppointmentWindow;
 	ModifyAppointmentWindow modifyAppointmentWindow;
 
-	public AppointmentCRUDWindow(InitialWindow parent) {
-		super(parent, true);
+	public AppointmentCRUDWindow() {
 		setResizable(false);
 		
 		model = new AppointmentModel();
@@ -55,7 +54,7 @@ public class AppointmentCRUDWindow extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 	            if(table.getSelectedRow() != -1) {
 	               model.removeRow(table.getSelectedRow());
-	               JOptionPane.showMessageDialog(null, "Selected row deleted successfully!");
+	               JOptionPane.showMessageDialog(null, "Appointment deleted successfully!");
 	            }
 			}
 		});
@@ -79,6 +78,8 @@ public class AppointmentCRUDWindow extends JDialog {
 		JButton goBackButton = new JButton("Go Back");
 		goBackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
 				dispose();
 			}
 		});
@@ -88,6 +89,7 @@ public class AppointmentCRUDWindow extends JDialog {
 		
 		setSize(1161, 600);
 		setTitle("Appointment CRUD");
+		setLocationRelativeTo(null);
 	}
 	
 	public void refreshTable()

@@ -177,7 +177,7 @@ public class ModifyAppointmentWindow extends JDialog {
 					
 					Timeslot timeslot = new Timeslot(startTime, endTime);
 					
-					Appointment appointment = new Appointment(appointmentForModification.getId(), beautician, client, timeslot, service, AppointmentStatus.SCHEDULED);
+					Appointment appointment = new Appointment(appointmentForModification.getId(), beautician, client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
 					
 					ManagerService managerService = new ManagerService();
 					int result = managerService.modifyAppointment(appointment);

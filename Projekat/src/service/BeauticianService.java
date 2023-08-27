@@ -108,4 +108,36 @@ public class BeauticianService {
 		}
 		return false;
 	}
+	
+	public ArrayList<Beautician> getApropriateBeauticians(Service service) {
+		ArrayList<Beautician> apropriateBeauticians = new ArrayList<Beautician>();
+		for(Beautician beautician : beautySalon.getBeauticians()) {
+			if(beautician.hasSkill(service.getType())) {
+				apropriateBeauticians.add(beautician);
+			}
+		}
+		return apropriateBeauticians;
+	}
+
+	public Beautician getAvailableBeautician(Appointment appointment) {
+		BeauticianService beauticianService = new BeauticianService();
+		ArrayList<Beautician> availableBeauticians = new ArrayList<Beautician>();
+		
+		for(Beautician b : beautySalon.getBeauticians())
+		{
+			if(beauticianService.canPerform(b, appointment.getService()))
+			{
+				availableBeauticians.add(b);
+			}
+		}
+		
+		for(Appointment a : beautySalon.getAppointments()) {
+			if(TimeslotService.areOverlaping(appointment.getTimeslot(), a.getTimeslot()) && a.getStatus() == AppointmentStatus.SCHEDULED) {
+				availableBeauticians.remove(a.getBeautician());
+			}
+		}
+		if(availableBeauticians.size() == 0)
+			return null;
+		return availableBeauticians.get(0);
+	}
 }

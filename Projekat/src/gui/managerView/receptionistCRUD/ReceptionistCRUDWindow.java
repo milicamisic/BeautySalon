@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import gui.InitialWindow;
-
 public class ReceptionistCRUDWindow extends JDialog {
 
 	private static final long serialVersionUID = -4851142263147950673L;
@@ -23,8 +21,7 @@ public class ReceptionistCRUDWindow extends JDialog {
 	AddReceptionistWindow addReceptionistWindow;
 	ModifyReceptionistWindow modifyReceptionistWindow;
 
-	public ReceptionistCRUDWindow(InitialWindow parent) {
-		super(parent, true);
+	public ReceptionistCRUDWindow() {
 		setResizable(false);
 		
 		model = new ReceptionistModel();

@@ -106,8 +106,11 @@ public class ManagerService {
 	}
 	
 	public int modifyAppointment(Appointment a) {
-		removeAppointment(a); // we know that this appointment exists because it is being modified
-		return addAppointment(a);
+		int result = addAppointment(a);
+		if(result == 0) {
+			removeAppointment(a); // we know that this appointment exists because it is being modified
+		}
+		return result;
 	}
 
 	public void viewAppointments() {

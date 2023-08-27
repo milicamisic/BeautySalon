@@ -10,8 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import gui.InitialWindow;
-
 public class ManagerCRUDWindow extends JDialog {
 
 	private static final long serialVersionUID = -4851142263147950673L;
@@ -23,8 +21,7 @@ public class ManagerCRUDWindow extends JDialog {
 	AddManagerWindow addManagerWindow;
 	ModifyManagerWindow modifyManagerWindow;
 
-	public ManagerCRUDWindow(InitialWindow parent) {
-		super(parent, true);
+	public ManagerCRUDWindow() {
 		setResizable(false);
 		
 		model = new ManagerModel();
