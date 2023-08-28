@@ -1,17 +1,11 @@
 package service;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import humanEntities.Beautician;
 import humanEntities.Client;
+import humanEntities.Manager;
+import humanEntities.Receptionist;
 import humanEntities.Role;
 import humanEntities.Sex;
 import humanEntities.User;
@@ -25,26 +19,30 @@ public class UserService {
 	
 	public static Role login(String username, char[] pass) {
 		Role role = null;
-		try {
-			BufferedReader br = new BufferedReader(
-									new InputStreamReader(
-											new FileInputStream("src/data/login_info"), "utf-8"));
-			String line;
-			
-			while((line = br.readLine()) != null) {
-				String[] tokens = line.split("\\|");
-				
-				if(tokens[0].equals(username) && isPassOk(pass, tokens[1])) {
-					role = Role.valueOf(tokens[2]);
-				}
+		String password = new String(pass);
+		
+		for(Client c : beautySalon.getClients()) {
+			if(c.getUsername().equals(username) && c.getPassword().equals(password)) {
+				role = Role.CLIENT;
 			}
-			br.close();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		}
+		
+		for(Beautician b : beautySalon.getBeauticians()) {
+			if(b.getUsername().equals(username) && b.getPassword().equals(password)) {
+				role = Role.BEAUTICIAN;
+			}
+		}
+		
+		for(Receptionist r : beautySalon.getReceptionists()) {
+			if(r.getUsername().equals(username) && r.getPassword().equals(password)) {
+				role = Role.RECEPTIONIST;
+			}
+		}
+		
+		for(Manager m : beautySalon.getManagers()) {
+			if(m.getUsername().equals(username) && m.getPassword().equals(password)) {
+				role = Role.MANAGER;
+			}
 		}
 		
 		if(role != null) {
@@ -53,15 +51,6 @@ public class UserService {
 		}
 		
 		return role;
-	}
-	
-	private static boolean isPassOk(char[] pass, String userPassword) {
-		if(pass.length != userPassword.length()) return false;
-		
-		for(int i = 0; i < pass.length; i++) {
-			if(pass[i] != userPassword.charAt(i)) return false;
-		}
-		return true;
 	}
 	
 	public static boolean isAlpha(String name) {
@@ -82,29 +71,12 @@ public class UserService {
 		return false;
 	}
 	
-	public static void registerClient(String name, String surname, Sex sex, String phoneNumber, String address, String username, String password) 
+	public void registerClient(String name, String surname, Sex sex, String phoneNumber, String address, String username, char[] passwordChars) 
 	{
-		User u = new User(name, surname, sex, phoneNumber, address, username, password);
-		beautySalon.addUser(u);
+		String password = String.valueOf(passwordChars);
 		
 		Client c = new Client(name, surname, sex, phoneNumber, address, username, password, 0, false);
 		beautySalon.addClient(c);
-		
-		try {
-			BufferedWriter bw = new BufferedWriter(
-									new OutputStreamWriter(
-											new FileOutputStream("src/data/login_info", true), "utf-8"));
-			
-			bw.write(username + "|" + password + "|" + "Client\n");
-			
-			bw.close();
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public static User getUserByUsername(String username)

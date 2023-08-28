@@ -9,8 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import gui.beauticianView.appointmentViewing.ViewAppointmentsWindow;
+import gui.beauticianView.skillsView.ViewSkillsWindow;
 import gui.general.LoginWindow;
-import gui.managerView.serviceTypeCRUD.ServiceTypeCRUDWindow;
 
 public class BeauticianMainWindow extends JFrame{
 	
@@ -24,7 +24,9 @@ public class BeauticianMainWindow extends JFrame{
 		
 		skillsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				ViewSkillsWindow viewSkillsWindow = new ViewSkillsWindow();
+				viewSkillsWindow.setVisible(true);
+				dispose();
 			}
 		});
 		skillsButton.setFont(new Font("Tahoma", Font.PLAIN, 25));

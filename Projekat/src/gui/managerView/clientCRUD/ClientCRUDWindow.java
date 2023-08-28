@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import gui.managerView.ManagerMainWindow;
+
 public class ClientCRUDWindow extends JDialog {
 
 	private static final long serialVersionUID = -4851142263147950673L;
@@ -76,6 +78,8 @@ public class ClientCRUDWindow extends JDialog {
 		JButton goBackButton = new JButton("Go Back");
 		goBackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
 				dispose();
 			}
 		});

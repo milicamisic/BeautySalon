@@ -17,6 +17,7 @@ import javax.swing.border.EmptyBorder;
 import gui.beauticianView.BeauticianMainWindow;
 import gui.clientView.ClientMainWindow;
 import gui.managerView.ManagerMainWindow;
+import gui.receptionistView.ReceptionistMainWindow;
 import humanEntities.Role;
 import paket1.MainWindow;
 import service.UserService;
@@ -112,7 +113,9 @@ public class LoginWindow extends JFrame {
 				dispose();
 				break;
 			case RECEPTIONIST:
-				
+				ReceptionistMainWindow receptionistMainWindow = new ReceptionistMainWindow();
+				receptionistMainWindow.setVisible(true);
+				dispose();
 				break;
 			}
 		}

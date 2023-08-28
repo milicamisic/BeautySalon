@@ -16,6 +16,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import gui.clientView.ClientMainWindow;
 import humanEntities.Sex;
 import service.UserService;
 
@@ -44,7 +45,6 @@ public class RegistrationWindow extends JDialog {
 
 	public RegistrationWindow() {
 		
-		this.parent = parent;
 		setBounds(100, 100, 976, 592);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -128,14 +128,15 @@ public class RegistrationWindow extends JDialog {
 				String phoneNumber = phoneNumberField.getText();
 				String address = addressField.getText();
 				String username = usernameField.getText();
-				String password = passwordField.getPassword().toString();
+				char[] password = passwordField.getPassword();
 				
 				boolean inputValid = checkRegistrationForm(name, surname, phoneNumber, address, username, password);
 				
-				if(inputValid)
-					UserService.registerClient(name, surname, sex, phoneNumber, address, username, password);
-				
-				switchToClientMainWindow();
+				if(inputValid) {
+					UserService userService = new UserService();
+					userService.registerClient(name, surname, sex, phoneNumber, address, username, password);
+					switchToClientMainWindow();
+				}
 			}
 		});
 		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -160,12 +161,13 @@ public class RegistrationWindow extends JDialog {
 	}
 
 	protected void switchToClientMainWindow() {
-		// TODO Auto-generated method stub
-		
+		ClientMainWindow clientMainWindow = new ClientMainWindow();
+		clientMainWindow.setVisible(true);
+		dispose();
 	}
 
-	public boolean checkRegistrationForm(String name, String surname, String phoneNumber, String address, String username, String password) {
-		if(name.isEmpty() || surname.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || username.isEmpty() || password.isEmpty()) {
+	public boolean checkRegistrationForm(String name, String surname, String phoneNumber, String address, String username, char[] password) {
+		if(name.isEmpty() || surname.isEmpty() || phoneNumber.isEmpty() || address.isEmpty() || username.isEmpty() || password.length == 0) {
 			JOptionPane.showMessageDialog(null, "All fields must be filled!", "Error message", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}

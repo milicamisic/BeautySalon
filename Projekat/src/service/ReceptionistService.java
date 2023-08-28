@@ -50,12 +50,16 @@ public class ReceptionistService {
 		
 	}
 
-	public void cancelAppointment(Appointment appointment) {
+	public boolean cancelAppointment(Appointment appointment) {
+		if(appointment.getStatus() != AppointmentStatus.SCHEDULED)
+			return false;
+		
 		appointment.setStatus(AppointmentStatus.SALON_CANCELED);
 		beautySalon.modifyAppointment(appointment);
 		updateMoneySpentCancelled(appointment.getClient(), appointment.getService());
 		Expense e = new Expense("SalonCancelled: Appointment " + appointment.getId(), appointment.getService().getPrice(), LocalDate.now());
 		beautySalon.addExpense(e);
+		return true;
 	}
 
 	public void expireAppointment(Appointment appointment) {
