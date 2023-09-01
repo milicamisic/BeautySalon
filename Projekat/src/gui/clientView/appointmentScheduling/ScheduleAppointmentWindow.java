@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -42,7 +44,6 @@ public class ScheduleAppointmentWindow extends JFrame {
 
 	public ScheduleAppointmentWindow(Service service, Beautician beautician, ArrayList<Service> appropriateServices) {
 		setMinimumSize(new Dimension(790, 315));
-		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		beautySalon = BeautySalon.getBeautySalon();
@@ -140,6 +141,16 @@ public class ScheduleAppointmentWindow extends JFrame {
 		cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cancelButton.setBounds(344, 215, 147, 48);
 		getContentPane().add(cancelButton);
+		
+		setLocationRelativeTo(null);
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	PickServiceWindow pickServiceWindow = new PickServiceWindow(appropriateServices);
+				pickServiceWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	private static ArrayList<Appointment> generateAppointments(Service service, Beautician beautician, String dateString, JComboBox<String> timeComboBox) {

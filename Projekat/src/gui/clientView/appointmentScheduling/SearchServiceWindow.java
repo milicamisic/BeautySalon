@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -204,6 +206,15 @@ public class SearchServiceWindow extends JFrame {
 		instructionLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		instructionLabel.setBounds(41, 306, 417, 32);
 		getContentPane().add(instructionLabel);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ClientMainWindow clientMainWindow = new ClientMainWindow();
+				clientMainWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	private boolean valideFields(String fromDuration, String toDuration, String fromPrice, String toPrice)

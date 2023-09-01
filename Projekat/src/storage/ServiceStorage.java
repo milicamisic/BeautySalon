@@ -9,7 +9,7 @@ import pisanje.MyWriter;
 
 public class ServiceStorage {
 	private final String SEPARATOR = File.separator;
-	private final String STORAGE_PATH = "src" + SEPARATOR + "data" + SEPARATOR + "services3";
+	private final String STORAGE_PATH = "src" + SEPARATOR + "data" + SEPARATOR + "services";
 	
 	public ArrayList<Service> load() {
 		

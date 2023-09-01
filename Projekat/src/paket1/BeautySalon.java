@@ -5,16 +5,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import controller.AppointmentController;
-import controller.BeauticianController;
-import controller.ClientController;
-import controller.ExpenseController;
-import controller.ManagerController;
-import controller.ReceptionistController;
-import controller.RevenueController;
-import controller.ServiceController;
-import controller.ServiceTypeController;
-import controller.UserController;
 import humanEntities.Beautician;
 import humanEntities.Client;
 import humanEntities.Manager;
@@ -28,7 +18,17 @@ import otherEntities.ServiceType;
 import otherEntities.Timeslot;
 import service.BeauticianService;
 import service.ClientService;
+import storage.AppointmentStorage;
+import storage.BeauticianStorage;
 import storage.BeautySalonStorage;
+import storage.ClientStorage;
+import storage.ExpenseStorage;
+import storage.ManagerStorage;
+import storage.ReceptionistStorage;
+import storage.RevenueStorage;
+import storage.ServiceStorage;
+import storage.ServiceTypeStorage;
+import storage.UserStorage;
 
 public class BeautySalon { //Singleton
 	
@@ -90,27 +90,27 @@ public class BeautySalon { //Singleton
 	}
 
 	private void initialize() {
-		UserController userController = new UserController();
-		ManagerController managerController = new ManagerController();
-		ClientController clientController = new ClientController();
-		BeauticianController beauticianController = new BeauticianController();
-		ReceptionistController receptionistController = new ReceptionistController();
-		ServiceTypeController serviceTypeController = new ServiceTypeController();
-		ServiceController serviceController = new ServiceController();
-		AppointmentController appointmentController = new AppointmentController();
-		RevenueController revenueController = new RevenueController();
-		ExpenseController expenseController = new ExpenseController();
+		UserStorage userStorage = new UserStorage();
+		ManagerStorage managerStorage = new ManagerStorage();
+		ClientStorage clientStorage = new ClientStorage();
+		BeauticianStorage beauticianStorage = new BeauticianStorage();
+		ReceptionistStorage receptionistStorage = new ReceptionistStorage();
+		ServiceTypeStorage serviceTypeStorage = new ServiceTypeStorage();
+		ServiceStorage serviceStorage = new ServiceStorage();
+		AppointmentStorage appointmentStorage = new AppointmentStorage();
+		RevenueStorage revenueStorage = new RevenueStorage();
+		ExpenseStorage expenseStorage = new ExpenseStorage();
 		
-		this.users = userController.getAllUsers();
-		this.managers = managerController.getAllManagers();
-		this.clients = clientController.getAllClients();
-		this.beauticians = beauticianController.getAllBeauticians();
-		this.receptionists = receptionistController.getAllReceptionists();
-		this.serviceTypes = serviceTypeController.getAllServiceTypes();
-		this.services = serviceController.getAllServices();
-		this.appointments = appointmentController.getAllAppointments();
-		this.revenues = revenueController.getAllRevenues();
-		this.expenses = expenseController.getAllExpenses();
+		this.users = userStorage.load();
+		this.managers = managerStorage.load();
+		this.clients = clientStorage.load();
+		this.beauticians = beauticianStorage.load();
+		this.receptionists = receptionistStorage.load();
+		this.serviceTypes = serviceTypeStorage.load();
+		this.services = serviceStorage.load();
+		this.appointments = appointmentStorage.load();
+		this.revenues = revenueStorage.load();
+		this.expenses = expenseStorage.load();
 		loadInfo();
 	}
 	
@@ -585,5 +585,30 @@ public class BeautySalon { //Singleton
 	
 	public void setCurrentUser(User user) {
 		this.currentUser = user;
+	}
+
+	public void saveData() {
+		UserStorage userStorage = new UserStorage();
+		ManagerStorage managerStorage = new ManagerStorage();
+		ClientStorage clientStorage = new ClientStorage();
+		BeauticianStorage beauticianStorage = new BeauticianStorage();
+		ReceptionistStorage receptionistStorage = new ReceptionistStorage();
+		ServiceTypeStorage serviceTypeStorage = new ServiceTypeStorage();
+		ServiceStorage serviceStorage = new ServiceStorage();
+		AppointmentStorage appointmentStorage = new AppointmentStorage();
+		RevenueStorage revenueStorage = new RevenueStorage();
+		ExpenseStorage expenseStorage = new ExpenseStorage();
+		
+		userStorage.save(users);
+		managerStorage.save(managers);
+		clientStorage.save(clients);
+		beauticianStorage.save(beauticians);
+		receptionistStorage.save(receptionists);
+		serviceTypeStorage.save(serviceTypes);
+		serviceStorage.save(services);
+		appointmentStorage.save(appointments);
+		revenueStorage.save(revenues);
+		expenseStorage.save(expenses);
+		
 	}
 }

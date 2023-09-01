@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import gui.managerView.ManagerMainWindow;
 import otherEntities.Service;
 import otherEntities.ServiceType;
 import paket1.BeautySalon;
@@ -110,6 +113,8 @@ public class ModifyServiceWindow extends JFrame {
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ServiceCRUDWindow serviceCRUDWindow = new ServiceCRUDWindow();
+				serviceCRUDWindow.setVisible(true);
 				dispose();
 			}
 		});
@@ -132,6 +137,17 @@ public class ModifyServiceWindow extends JFrame {
 		priceTextField.setColumns(10);
 		priceTextField.setBounds(259, 286, 161, 48);
 		getContentPane().add(priceTextField);
+		
+		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ServiceCRUDWindow serviceCRUDWindow = new ServiceCRUDWindow();
+				serviceCRUDWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	private boolean validateFields(String durationString, String priceString)

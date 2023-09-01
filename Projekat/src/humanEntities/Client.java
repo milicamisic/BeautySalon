@@ -47,19 +47,6 @@ public class Client extends User{
 		return name + "|" + surname + "|" + sex.toString() + "|" + phoneNumber + "|" + address + 
 			   "|" + username + "|" + password + "|" + moneySpent + "|" + hasLoyaltyCard;
 	}
-
-	public static Client findClientByUsername(String username) {
-		ClientReader cr = new ClientReader("src/data/clients3");
-		ArrayList<Client> clients = cr.loadClients();
-		
-		for(int i = 0; i < clients.size(); i++) {
-			if(clients.get(i).username.equals(username)) {
-				return clients.get(i);
-			}
-		}
-		
-		return null;
-	}
 	
 	public Object toCell(int columnIndex) {
 		switch (columnIndex) {

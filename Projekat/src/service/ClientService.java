@@ -67,9 +67,10 @@ public class ClientService {
 	public boolean cancelAppointment(Appointment appointment) {
 		if(appointment.getStatus() == AppointmentStatus.SCHEDULED) {
 			appointment.setStatus(AppointmentStatus.CLIENT_CANCELED);
+			appointment.setPrice(0.1*appointment.getPrice());
 			beautySalon.modifyAppointment(appointment);
 			updateMoneySpentCancelled(appointment.getClient(), appointment.getService());
-			Expense e = new Expense("ClientCancelled: Appointment " + appointment.getId(), 0.9*appointment.getService().getPrice(), LocalDate.now());
+			Expense e = new Expense("ClientCancelled: Appointment " + appointment.getId(), 0.9*appointment.getPrice(), LocalDate.now());
 			beautySalon.addExpense(e);	
 			return true;
 		}

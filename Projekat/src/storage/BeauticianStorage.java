@@ -9,7 +9,7 @@ import pisanje.MyWriter;
 
 public class BeauticianStorage {
 	private final String SEPARATOR = File.separator;
-	private final String STORAGE_PATH = "src" + SEPARATOR + "data" + SEPARATOR + "beauticians3";
+	private final String STORAGE_PATH = "src" + SEPARATOR + "data" + SEPARATOR + "beauticians";
 	
 	public ArrayList<Beautician> load() {
 		

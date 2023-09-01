@@ -6,6 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import otherEntities.Appointment;
 import paket1.BeautySalon;
+import service.AppointmentService;
 import service.ReceptionistService;
 
 public class AppointmentModel extends AbstractTableModel {
@@ -15,6 +16,7 @@ public class AppointmentModel extends AbstractTableModel {
 	private String[] columns = {"Id", "Beautician", "Client", "Start", "Duration", "Service", "Service Type", "Price", "Status"};
 	private BeautySalon beautySalon;
 	private ReceptionistService receptionistService;
+	private AppointmentService appointmentService;
 	
 	private ArrayList<Appointment> appointments;
 
@@ -23,6 +25,7 @@ public class AppointmentModel extends AbstractTableModel {
 		this.beautySalon = BeautySalon.getBeautySalon();
 		this.appointments = beautySalon.getAppointments();
 		this.receptionistService = new ReceptionistService();
+		this.appointmentService = new AppointmentService();
 	}
 
 	@Override
@@ -69,5 +72,23 @@ public class AppointmentModel extends AbstractTableModel {
 		
 		fireTableDataChanged();
 		return isCanceled;
+	}
+
+	public void applyFilters(String service, String serviceType, double fromPrice, double toPrice) {
+		if(!service.equals("<no filter>")) {
+			appointments = appointmentService.getAppointmentsByService(service);
+		}
+		if(!serviceType.equals("<no filter>")) {
+			appointments = appointmentService.getAppointmentsByServiceType(serviceType);
+		}
+		ArrayList<Appointment> filteredAppointments = new ArrayList<Appointment>();
+		
+		for(Appointment a : appointments) {
+			if(fromPrice <= a.getPrice() && a.getPrice() <= toPrice) {
+				filteredAppointments.add(a);
+			}
+		}
+		appointments = filteredAppointments;
+		fireTableDataChanged();
 	}
 }

@@ -294,6 +294,7 @@ public class ModifyBeauticianWindow extends JDialog {
 		cancelButton.setBounds(1104, 534, 156, 51);
 		getContentPane().add(cancelButton);
 		
+		setLocationRelativeTo(null);
 	}
 	
 	private boolean valideFields(String name, String surname, String phoneNumber, String address, String username, String password, String basePayString, String educationLevelString, String serviceYearsString)

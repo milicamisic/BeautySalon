@@ -35,19 +35,6 @@ public class Beautician extends Worker{
 		}
 		return false;
 	}
-
-	public static Beautician findBeauticianByUsername(String username) {
-		BeauticianReader br = new BeauticianReader("src/data/beauticians3");
-		ArrayList<Beautician> beauticians = br.loadBeauticians();
-		
-		for(int i = 0; i < beauticians.size(); i++) {
-			if(beauticians.get(i).username.equals(username)) {
-				return beauticians.get(i);
-			}
-		}
-		
-		return null;
-	}
 	
 	@Override
 	public String toString() {
@@ -74,7 +61,7 @@ public class Beautician extends Worker{
 					   Double.toString(basePay) + "|";
 		
 		if (!trainedFor.isEmpty()) {
-			line += trainedFor.get(0);
+			line += trainedFor.get(0).getType();
 			
 			for(int i = 1; i < trainedFor.size(); i++)
 				line += "," + trainedFor.get(i).getType();

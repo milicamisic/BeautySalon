@@ -71,12 +71,16 @@ public class UserService {
 		return false;
 	}
 	
-	public void registerClient(String name, String surname, Sex sex, String phoneNumber, String address, String username, char[] passwordChars) 
+	public boolean registerClient(String name, String surname, Sex sex, String phoneNumber, String address, String username, char[] passwordChars) 
 	{
 		String password = String.valueOf(passwordChars);
 		
 		Client c = new Client(name, surname, sex, phoneNumber, address, username, password, 0, false);
-		beautySalon.addClient(c);
+		if(beautySalon.addClient(c)) {
+			beautySalon.setCurrentUser(c);
+			return true;
+		}
+		return false;
 	}
 	
 	public static User getUserByUsername(String username)

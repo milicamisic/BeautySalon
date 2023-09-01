@@ -1,8 +1,11 @@
 package gui.managerView.serviceCRUD;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,11 +14,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import gui.managerView.ManagerMainWindow;
-import gui.managerView.serviceCRUD.AddServiceWindow;
-import gui.managerView.serviceCRUD.ServiceCRUDWindow;
-import gui.managerView.serviceCRUD.ServiceModel;
-import gui.managerView.serviceCRUD.ModifyServiceWindow;
-import java.awt.Dimension;
 
 public class ServiceCRUDWindow extends JFrame {
 
@@ -98,6 +96,15 @@ public class ServiceCRUDWindow extends JFrame {
 		setSize(933, 465);
 		setTitle("Service CRUD");
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	public void refreshTable()

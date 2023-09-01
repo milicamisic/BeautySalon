@@ -3,6 +3,8 @@ package gui.managerView.clientCRUD;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -89,6 +91,16 @@ public class ClientCRUDWindow extends JDialog {
 		
 		setSize(1026, 600);
 		setTitle("Client CRUD");
+		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	public void refreshTable()

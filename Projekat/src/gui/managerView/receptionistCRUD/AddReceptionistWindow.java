@@ -194,6 +194,7 @@ public class AddReceptionistWindow extends JDialog {
 		cancelButton.setBounds(799, 530, 156, 51);
 		getContentPane().add(cancelButton);
 		
+		setLocationRelativeTo(null);
 	}
 	
 	private boolean valideFields(String name, String surname, String phoneNumber, String address, String username, String password, String basePayString, String educationLevelString, String serviceYearsString)

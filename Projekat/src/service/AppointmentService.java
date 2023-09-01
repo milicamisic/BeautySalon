@@ -79,8 +79,10 @@ public class AppointmentService {
 		
 		for(LocalTime time : startTimeOptions) {
 			LocalDateTime startTime = date.atTime(time);
+			if(startTime.isBefore(LocalDateTime.now())) continue;
+			
 			LocalDateTime endTime = date.atTime(time).plusMinutes(service.getDurationInMinutes());
-			Timeslot timeslot = new Timeslot(startTime, endTime);
+			Timeslot timeslot = new Timeslot(startTime, endTime); 
 			appointments.add(new Appointment(client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice()));
 		}
 		
@@ -108,4 +110,13 @@ public class AppointmentService {
 		}
 		return appointments;
 	}
+	
+	public ArrayList<Appointment> getAppointmentsByService(String serviceName) {
+		return null;
+	}
+	
+	public ArrayList<Appointment> getAppointmentsByServiceType(String serviceType) {
+		return null;
+	}
+	
 }

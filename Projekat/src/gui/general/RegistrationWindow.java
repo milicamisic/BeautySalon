@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,14 +17,14 @@ import javax.swing.border.EmptyBorder;
 
 import gui.clientView.ClientMainWindow;
 import humanEntities.Sex;
+import paket1.MainWindow;
 import service.UserService;
 
-public class RegistrationWindow extends JDialog {
+public class RegistrationWindow extends JFrame {
 
 	private static final long serialVersionUID = -3931298970489487084L;
 	
 	private JPanel contentPanel = new JPanel();
-	private JFrame parent;
 	
 	private JLabel nameLabel = new JLabel("Name:");
 	private JLabel surnameLabel = new JLabel("Surname:");
@@ -134,8 +133,9 @@ public class RegistrationWindow extends JDialog {
 				
 				if(inputValid) {
 					UserService userService = new UserService();
-					userService.registerClient(name, surname, sex, phoneNumber, address, username, password);
-					switchToClientMainWindow();
+					boolean registered = userService.registerClient(name, surname, sex, phoneNumber, address, username, password);
+					if(registered)
+						switchToClientMainWindow();
 				}
 			}
 		});
@@ -153,10 +153,13 @@ public class RegistrationWindow extends JDialog {
 		contentPanel.add(cancelButton);
 		
 		setLocationRelativeTo(null);
+		
+		
 	}
 	
 	protected void switchToMainWindow() {
-		parent.setVisible(true);
+		MainWindow mainWindow =  new MainWindow();
+		mainWindow.setVisible(true);
 		dispose();
 	}
 

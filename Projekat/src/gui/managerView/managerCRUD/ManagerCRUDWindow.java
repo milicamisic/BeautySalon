@@ -3,12 +3,17 @@ package gui.managerView.managerCRUD;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import gui.managerView.ManagerMainWindow;
+import paket1.BeautySalon;
 
 public class ManagerCRUDWindow extends JDialog {
 
@@ -76,6 +81,8 @@ public class ManagerCRUDWindow extends JDialog {
 		JButton goBackButton = new JButton("Go Back");
 		goBackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
 				dispose();
 			}
 		});
@@ -85,6 +92,16 @@ public class ManagerCRUDWindow extends JDialog {
 		
 		setSize(1026, 600);
 		setTitle("Manager CRUD");
+		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	public void refreshTable()

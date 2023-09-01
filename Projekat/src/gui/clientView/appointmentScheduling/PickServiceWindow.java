@@ -1,26 +1,29 @@
 package gui.clientView.appointmentScheduling;
 
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import humanEntities.Beautician;
-import humanEntities.Client;
 import otherEntities.Service;
 import paket1.BeautySalon;
 import service.BeauticianService;
 import service.ServiceService;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Dimension;
 
 public class PickServiceWindow extends JFrame {
 
+	private static final long serialVersionUID = -504705042894400217L;
+	
 	private BeautySalon beautySalon;
 	private BeauticianService beauticianService;
 	private JComboBox<String> beauticianComboBox;
@@ -103,6 +106,16 @@ public class PickServiceWindow extends JFrame {
 		cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cancelButton.setBounds(723, 134, 156, 51);
 		getContentPane().add(cancelButton);
+		
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	SearchServiceWindow searchServiceWindow = new SearchServiceWindow();
+				searchServiceWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 }

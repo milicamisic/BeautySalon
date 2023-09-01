@@ -15,16 +15,22 @@ import otherEntities.Appointment;
 import otherEntities.AppointmentStatus;
 import otherEntities.Service;
 import otherEntities.Timeslot;
+import service.BeauticianService;
+import service.ClientService;
 import service.ServiceService;
 
 public class AppointmentReader {
 	
 	String fileName;
 	ServiceService serviceService;
+	BeauticianService beauticianService;
+	ClientService clientService;
 	
 	public AppointmentReader(String fileName) {
 		this.fileName = fileName;
 		this.serviceService = new ServiceService();
+		this.beauticianService = new BeauticianService();
+		this.clientService = new ClientService();
 	}
 	
 	public ArrayList<Appointment> loadAppointments() {
@@ -40,8 +46,8 @@ public class AppointmentReader {
 				String[] tokens = line.split("\\|");
 				
 				int id = Integer.parseInt(tokens[0]);
-				Beautician b = Beautician.findBeauticianByUsername(tokens[1]);
-				Client c = Client.findClientByUsername(tokens[2]);
+				Beautician b = beauticianService.getBeauticianByUsername(tokens[1]);
+				Client c = clientService.getClientByUsername(tokens[2]);
 				String[] ts = tokens[3].split(";");
 				Timeslot t = new Timeslot(LocalDateTime.parse(ts[0]), LocalDateTime.parse(ts[1]));
 				Service service = serviceService.getServiceByName(tokens[4]);

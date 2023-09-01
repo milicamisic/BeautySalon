@@ -3,6 +3,8 @@ package paket1;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,8 +17,12 @@ import gui.general.RegistrationWindow;
 public class MainWindow extends JFrame{
     
 	private static final long serialVersionUID = 7477863960641438862L;
+	
+	private BeautySalon beautySalon;
 
 	public MainWindow() {
+		beautySalon = BeautySalon.getBeautySalon();
+		
 		getContentPane().setLayout(null);
 		setTitle("Beauty Salon Main Window");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -48,6 +54,14 @@ public class MainWindow extends JFrame{
 		registerButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		registerButton.setBounds(417, 287, 154, 66);
 		getContentPane().add(registerButton);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	beautySalon.saveData();
+                System.exit(0);
+            }
+        });
 	}
     
     private void switchToLoginWindow() {

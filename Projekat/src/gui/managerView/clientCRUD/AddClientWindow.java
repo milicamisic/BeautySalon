@@ -155,6 +155,7 @@ public class AddClientWindow extends JDialog {
 		cancelButton.setBounds(800, 411, 156, 51);
 		getContentPane().add(cancelButton);
 		
+		setLocationRelativeTo(null);
 	}
 	
 	private boolean valideFields(String name, String surname, String phoneNumber, String address, String username, String password)

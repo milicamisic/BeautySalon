@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -126,5 +128,14 @@ public class ManagerMainWindow extends JFrame{
 		getContentPane().add(logoutButton);
 		
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	LoginWindow loginWindow = new LoginWindow();
+				loginWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 }

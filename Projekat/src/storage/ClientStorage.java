@@ -9,7 +9,7 @@ import pisanje.MyWriter;
 
 public class ClientStorage {
 	private final String SEPARATOR = File.separator;
-	private final String STORAGE_PATH = "src" + SEPARATOR + "data" + SEPARATOR + "clients3";
+	private final String STORAGE_PATH = "src" + SEPARATOR + "data" + SEPARATOR + "clients";
 	
 	public ArrayList<Client> load() {
 		

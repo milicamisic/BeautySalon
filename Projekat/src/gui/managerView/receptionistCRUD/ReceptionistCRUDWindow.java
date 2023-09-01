@@ -3,14 +3,18 @@ package gui.managerView.receptionistCRUD;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-public class ReceptionistCRUDWindow extends JDialog {
+import gui.managerView.ManagerMainWindow;
+
+public class ReceptionistCRUDWindow extends JFrame {
 
 	private static final long serialVersionUID = -4851142263147950673L;
 	
@@ -76,6 +80,8 @@ public class ReceptionistCRUDWindow extends JDialog {
 		JButton goBackButton = new JButton("Go Back");
 		goBackButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
 				dispose();
 			}
 		});
@@ -85,6 +91,16 @@ public class ReceptionistCRUDWindow extends JDialog {
 		
 		setSize(1026, 600);
 		setTitle("Receptionist CRUD");
+		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	public void refreshTable()

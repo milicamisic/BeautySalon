@@ -3,12 +3,15 @@ package gui.receptionistView;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import gui.general.LoginWindow;
 import gui.receptionistView.appointmentScheduling.ScheduleAppointmentWindow;
+import gui.receptionistView.appointmentScheduling.SearchServiceWindow;
 import gui.receptionistView.appointmentViewing.ViewAppointmentsWindow;
 
 public class ReceptionistMainWindow extends JFrame {
@@ -38,8 +41,8 @@ public class ReceptionistMainWindow extends JFrame {
 		JButton scheduleAppointmentButton = new JButton("Schedule Appointment");
 		scheduleAppointmentButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ScheduleAppointmentWindow scheduleAppointmentWindow = new ScheduleAppointmentWindow();
-				scheduleAppointmentWindow.setVisible(true);
+				SearchServiceWindow searchServiceWindow = new SearchServiceWindow();
+				searchServiceWindow.setVisible(true);
 				dispose();
 			}
 		});
@@ -59,6 +62,14 @@ public class ReceptionistMainWindow extends JFrame {
 		logoutButton.setBounds(583, 393, 197, 49);
 		getContentPane().add(logoutButton);
 		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	LoginWindow loginWindow = new LoginWindow();
+				loginWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 
 }

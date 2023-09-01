@@ -53,7 +53,7 @@ public class ReceptionistService {
 	public boolean cancelAppointment(Appointment appointment) {
 		if(appointment.getStatus() != AppointmentStatus.SCHEDULED)
 			return false;
-		
+		appointment.setPrice(0);
 		appointment.setStatus(AppointmentStatus.SALON_CANCELED);
 		beautySalon.modifyAppointment(appointment);
 		updateMoneySpentCancelled(appointment.getClient(), appointment.getService());

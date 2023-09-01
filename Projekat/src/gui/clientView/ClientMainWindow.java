@@ -3,6 +3,8 @@ package gui.clientView;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,6 +49,8 @@ public class ClientMainWindow extends JFrame{
 		JButton loyaltyCardButton = new JButton("Loyalty Card");
 		loyaltyCardButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ViewLoyaltyCardWindow viewLoyaltyCardWindow = new ViewLoyaltyCardWindow();
+				viewLoyaltyCardWindow.setVisible(true);
 			}
 		});
 		loyaltyCardButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -65,6 +69,14 @@ public class ClientMainWindow extends JFrame{
 		logoutButton.setBounds(583, 393, 197, 49);
 		getContentPane().add(logoutButton);
 		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	LoginWindow loginWindow = new LoginWindow();
+				loginWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	protected void switchToScheduleAppointmentWindow() {

@@ -3,6 +3,8 @@ package gui.managerView.appointmentCRUD;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,8 +15,8 @@ import javax.swing.JTable;
 import gui.managerView.ManagerMainWindow;
 
 public class AppointmentCRUDWindow extends JFrame {
-
-	private static final long serialVersionUID = -4851142263147950673L;
+	
+	private static final long serialVersionUID = -8286556492931921204L;
 	
 	private JTable table;
 	private AppointmentModel model;
@@ -90,6 +92,15 @@ public class AppointmentCRUDWindow extends JFrame {
 		setSize(1161, 600);
 		setTitle("Appointment CRUD");
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+            	ManagerMainWindow managerMainWindow = new ManagerMainWindow();
+				managerMainWindow.setVisible(true);
+				dispose();
+            }
+        });
 	}
 	
 	public void refreshTable()
