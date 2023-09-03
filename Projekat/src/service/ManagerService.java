@@ -11,6 +11,7 @@ import humanEntities.Client;
 import humanEntities.Manager;
 import humanEntities.Receptionist;
 import otherEntities.Appointment;
+import otherEntities.AppointmentStatus;
 import otherEntities.Expense;
 import otherEntities.Revenue;
 import otherEntities.Service;
@@ -33,8 +34,8 @@ public class ManagerService {
 		return beautySalon.removeManager(username);
 	}
 	
-	public boolean modifyManager(Manager manager) {
-		return beautySalon.modifyManager(manager);
+	public void modifyManager(Manager manager) {
+		beautySalon.modifyManager(manager);
 	}
 	
 	public void viewManagers() {}
@@ -78,8 +79,8 @@ public class ManagerService {
 		return beautySalon.removeClient(username);
 	}
 	
-	public boolean modifyClient(Client c) {
-		return beautySalon.modifyClient(c);
+	public void modifyClient(Client c) {
+		beautySalon.modifyClient(c);
 	}
 
 	public void viewClients() {}
@@ -96,21 +97,29 @@ public class ManagerService {
 		return result;
 	}
 	
-	public boolean removeAppointment(Appointment appointment) 
+	public boolean cancelAppointment(Appointment appointment) 
 	{	
-		ReceptionistService receptionistService = new ReceptionistService();
-		boolean removed = beautySalon.removeAppointment(appointment);
-		if(removed == true)
-			receptionistService.updateMoneySpentCancelled(appointment.getClient(), appointment.getService());
-		return removed;
+		if(appointment.getStatus() != AppointmentStatus.SCHEDULED) return false;
+		
+		Expense expense = new Expense("Appointment " + appointment.getId() + " SALON_CANCELED", appointment.getPrice(), LocalDate.now());
+		beautySalon.addExpense(expense);
+		
+		Client client = appointment.getClient();
+		client.setMoneySpent(client.getMoneySpent() - appointment.getPrice());
+		
+		ArrayList<Appointment> appointments = beautySalon.getAppointments();
+		for(Appointment a :  appointments) {
+			if(a.getId() == appointment.getId()) {
+				a.setStatus(AppointmentStatus.SALON_CANCELED);
+				a.setPrice(0);
+			}
+		}
+		
+		return true;
 	}
 	
 	public int modifyAppointment(Appointment a) {
-		int result = addAppointment(a);
-		if(result == 0) {
-			removeAppointment(a); // we know that this appointment exists because it is being modified
-		}
-		return result;
+		return beautySalon.modifyAppointment(a);
 	}
 
 	public void viewAppointments() {

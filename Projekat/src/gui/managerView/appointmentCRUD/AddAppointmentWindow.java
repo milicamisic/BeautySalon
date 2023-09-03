@@ -182,9 +182,9 @@ public class AddAppointmentWindow extends JDialog {
 					
 					Appointment appointment;
 					if(autoBeautician)
-						appointment = new Appointment(client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
+						appointment = new Appointment(-1, client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
 					else
-						appointment = new Appointment(0, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
+						appointment = new Appointment(-1, beautician, client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice());
 					
 					ManagerService managerService = new ManagerService();
 					int result = managerService.addAppointment(appointment);

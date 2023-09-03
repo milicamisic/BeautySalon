@@ -49,4 +49,16 @@ public class Revenue implements ISerializable{
 		return description + "|" + moneyMade + "|" + date;
 	}
 	
+	public Object toCell(int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return description;
+		case 1:
+			return moneyMade;
+		case 2:
+			return date.toString();
+		default:
+			return "";
+		}
+	}
 }

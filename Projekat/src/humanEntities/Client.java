@@ -3,8 +3,8 @@ package humanEntities;
 import java.util.ArrayList;
 
 import citanje.AppointmentReader;
-import citanje.ClientReader;
 import otherEntities.Appointment;
+import paket1.BeautySalon;
 
 public class Client extends User{
 
@@ -25,6 +25,12 @@ public class Client extends User{
 
 	public void setMoneySpent(double moneySpent) {
 		this.moneySpent = moneySpent;
+		BeautySalon beautySalon = BeautySalon.getBeautySalon();
+		if(moneySpent >= beautySalon.getLoyaltyCardPrecondition()) {
+			this.hasLoyaltyCard = true;
+		} else {
+			this.hasLoyaltyCard = false;
+		}
 	}
 
 	public boolean hasLoyaltyCard() {

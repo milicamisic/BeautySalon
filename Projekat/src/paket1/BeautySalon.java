@@ -16,6 +16,7 @@ import otherEntities.Revenue;
 import otherEntities.Service;
 import otherEntities.ServiceType;
 import otherEntities.Timeslot;
+import service.AppointmentService;
 import service.BeauticianService;
 import service.ClientService;
 import storage.AppointmentStorage;
@@ -277,15 +278,13 @@ public class BeautySalon { //Singleton
 		return false;
 	}
 	
-	public boolean modifyManager(Manager manager) {
+	public void modifyManager(Manager manager) {
 		for(int i = 0; i < this.managers.size(); i++) {
 			if(this.managers.get(i).getUsername().equals(manager.getUsername())) {
 				this.managers.set(i, manager);
 				modifyUser(manager);
-				return true;
 			}
 		}
-		return false;
 	}
 
 	public ArrayList<Client> getClients() {
@@ -316,15 +315,13 @@ public class BeautySalon { //Singleton
 		return false;
 	}
 	
-	public boolean modifyClient(Client client) {
+	public void modifyClient(Client client) {
 		for(int i = 0; i < this.clients.size(); i++) {
 			if(this.clients.get(i).getUsername().equals(client.getUsername())) {
 				this.clients.set(i, client);
 				modifyUser(client);
-				return true;
 			}
 		}
-		return false;
 	}
 
 	public ArrayList<Beautician> getBeauticians() {
@@ -513,44 +510,59 @@ public class BeautySalon { //Singleton
 				return -1;
 		}
 		appointment.setBeautician(beautician);
-		appointment.setId(getNextAppointmentId());
+		
+		if(appointment.getId() == -1) {
+			appointment.setId(getNextAppointmentId());
+		}
+		
+		if(client.hasLoyaltyCard())
+			appointment.setPrice(appointment.getPrice()*0.9);
+		
 		this.appointments.add(appointment);
 		
-		double price = appointment.getService().getPrice();
-		if(client.hasLoyaltyCard())
-			price *= 0.9;
-		Revenue revenue = new Revenue("Appointment " + appointment.getId(), price, LocalDate.now());
+		Revenue revenue = new Revenue("Appointment " + appointment.getId() + " SCHEDULED", appointment.getPrice(), LocalDate.now());
 		addRevenue(revenue);
+		
+		client.setMoneySpent(client.getMoneySpent()+appointment.getPrice());
 		
 		return 0;
 	}
 	
+	// ovo se koristi samo za modifikaciju, nikad stvarno ne brisemo appointmente, samo menjamo statuse
 	public boolean removeAppointment(Appointment appointment) {
 		for(int i = 0; i < this.appointments.size(); i++) {
 			if(this.appointments.get(i).getId() == appointment.getId()) {
 				this.appointments.remove(i);
-				
-				double price = appointment.getService().getPrice();
-				if(appointment.getClient().hasLoyaltyCard())
-					price *= 0.9;
-				
-				Expense expense = new Expense("Appointment " + appointment.getId(), price, LocalDate.now());
-				addExpense(expense);
-				
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public boolean modifyAppointment(Appointment appointment) {
-		for(int i = 0; i < this.appointments.size(); i++) {
-			if(this.appointments.get(i).getId() == appointment.getId()) {
-				this.appointments.set(i, appointment);
-				return true;
-			}
+	public int modifyAppointment(Appointment appointment) {
+		AppointmentService appointmentService = new AppointmentService();
+		// ovaj modifikujemo
+		Appointment oldAppointment = appointmentService.getAppointmentById(appointment.getId());
+		// obrisemo ga onakvog kakav je bio
+		removeAppointment(oldAppointment);
+		
+		Expense expense = new Expense("Appointment " + appointment.getId() + " REMOVED_FOR_MODIFICATION", oldAppointment.getPrice(), LocalDate.now());
+		addExpense(expense);
+		
+		Client client = oldAppointment.getClient();
+		client.setMoneySpent(client.getMoneySpent() - oldAppointment.getPrice());
+
+		if(appointment.getClient().hasLoyaltyCard()) {
+			appointment.setPrice(appointment.getService().getPrice()*0.9);
+		} else {
+			appointment.setPrice(appointment.getService().getPrice());
 		}
-		return false;
+		// upisemo ga izmenjenog
+		int added = addAppointment(appointment);
+		if(added != 0)
+			addAppointment(oldAppointment); // ako ne moze takav novi da se doda samo upisemo stari
+		
+		return added;
 	}
 
 	public ArrayList<Revenue> getRevenues() {

@@ -26,9 +26,10 @@ public class Appointment implements ISerializable{
 		this.price = price;
 	}
 	
-	public Appointment(Client client, Timeslot timeslot, Service service, AppointmentStatus status, double price)
+	public Appointment(int id, Client client, Timeslot timeslot, Service service, AppointmentStatus status, double price)
 	{
 		super();
+		this.id = id;
 		this.client = client;
 		this.timeslot = timeslot;
 		this.service = service;
@@ -127,5 +128,9 @@ public class Appointment implements ISerializable{
 		default:
 			return "";
 		}
+	}
+	
+	public Appointment deepCopy() {
+		return new Appointment(id, beautician, client, timeslot, service, status, price);
 	}
 }

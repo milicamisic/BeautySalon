@@ -62,12 +62,15 @@ public class AppointmentModel extends AbstractTableModel {
 		return a.toCell(columnIndex);
 	}
 
-	public void removeRow(int rowIndex) {
+	public boolean cancelAppointment(int rowIndex) {
 		Appointment a = appointments.get(rowIndex);
 		
 		ManagerService managerService = new ManagerService();
-		managerService.removeAppointment(a);
 		
-		fireTableDataChanged();
+		if(managerService.cancelAppointment(a)) {
+			fireTableDataChanged();
+			return true;
+		}
+		return false;
 	}
 }

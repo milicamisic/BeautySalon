@@ -39,19 +39,8 @@ public class ClientService {
 		beautySalon.modifyClient(client);
 	}
 	
-	public void updateMoneySpentCancelled(Client client, Service service) {
-		if(client.hasLoyaltyCard())
-			client.setMoneySpent(client.getMoneySpent() - 0.9 * service.getPrice() * 0.9);
-		else
-			client.setMoneySpent(client.getMoneySpent() - 0.9 * service.getPrice());
-		beautySalon.modifyClient(client);
-	}
-	
 	public int makeAppointment(Appointment appointment) {
-		int result = beautySalon.addAppointment(appointment);
-		if(result == 0)
-			updateMoneySpentScheduled(appointment.getClient(), appointment.getService());
-		return result;
+		return beautySalon.addAppointment(appointment);
 	}
 
 	public ArrayList<Appointment> getAppointments(Client client) {
@@ -64,17 +53,25 @@ public class ClientService {
 		return clientAppointments;
 	}
 
-	public boolean cancelAppointment(Appointment appointment) {
-		if(appointment.getStatus() == AppointmentStatus.SCHEDULED) {
-			appointment.setStatus(AppointmentStatus.CLIENT_CANCELED);
-			appointment.setPrice(0.1*appointment.getPrice());
-			beautySalon.modifyAppointment(appointment);
-			updateMoneySpentCancelled(appointment.getClient(), appointment.getService());
-			Expense e = new Expense("ClientCancelled: Appointment " + appointment.getId(), 0.9*appointment.getPrice(), LocalDate.now());
-			beautySalon.addExpense(e);	
-			return true;
+	public boolean cancelAppointment(Appointment appointment) 
+	{	
+		if(appointment.getStatus() != AppointmentStatus.SCHEDULED) return false;
+		
+		Expense expense = new Expense("Appointment " + appointment.getId() + " CLIENT_CANCELED", appointment.getPrice() * 0.9, LocalDate.now());
+		beautySalon.addExpense(expense);
+		
+		Client client = appointment.getClient();
+		client.setMoneySpent(client.getMoneySpent() - appointment.getPrice() * 0.9);
+		
+		ArrayList<Appointment> appointments = beautySalon.getAppointments();
+		for(Appointment a :  appointments) {
+			if(a.getId() == appointment.getId()) {
+				a.setStatus(AppointmentStatus.CLIENT_CANCELED);
+				a.setPrice(a.getPrice()*0.1);
+			}
 		}
-		return false;
+		
+		return true;
 	}
 	
 	public void viewPastAppointments(Client client) {

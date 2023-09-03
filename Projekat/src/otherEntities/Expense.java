@@ -48,4 +48,17 @@ public class Expense implements ISerializable{
 	public String toLine() {
 		return description + "|" + moneyPaid + "|" + date;
 	}
+	
+	public Object toCell(int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return description;
+		case 1:
+			return moneyPaid;
+		case 2:
+			return date.toString();
+		default:
+			return "";
+		}
+	}
 }

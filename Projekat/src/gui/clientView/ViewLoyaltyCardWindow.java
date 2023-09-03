@@ -36,6 +36,7 @@ public class ViewLoyaltyCardWindow extends JDialog{
 		getContentPane().add(loyaltyCardLabel);
 		
 		textField = new JTextField(Boolean.toString(c.hasLoyaltyCard()));
+		textField.setEditable(false);
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textField.setBounds(164, 39, 132, 36);
 		getContentPane().add(textField);

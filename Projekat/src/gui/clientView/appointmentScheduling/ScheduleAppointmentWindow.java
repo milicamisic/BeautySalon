@@ -155,7 +155,7 @@ public class ScheduleAppointmentWindow extends JFrame {
 	
 	private static ArrayList<Appointment> generateAppointments(Service service, Beautician beautician, String dateString, JComboBox<String> timeComboBox) {
 		LocalDate date = null;
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.M.y");
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:m");
 		
 		try
@@ -194,7 +194,7 @@ public class ScheduleAppointmentWindow extends JFrame {
 	
 	private boolean validateFields(String dateString) {
 		LocalDate date = null;
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.M.y");
 		
 		try
 		{

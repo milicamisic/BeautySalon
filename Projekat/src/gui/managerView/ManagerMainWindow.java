@@ -14,6 +14,8 @@ import gui.general.LoginWindow;
 import gui.managerView.appointmentCRUD.AppointmentCRUDWindow;
 import gui.managerView.beauticianCRUD.BeauticianCRUDWindow;
 import gui.managerView.clientCRUD.ClientCRUDWindow;
+import gui.managerView.expensesRevenuesView.ViewExpensesWindow;
+import gui.managerView.expensesRevenuesView.ViewRevenuesWindow;
 import gui.managerView.managerCRUD.ManagerCRUDWindow;
 import gui.managerView.receptionistCRUD.ReceptionistCRUDWindow;
 import gui.managerView.serviceCRUD.ServiceCRUDWindow;
@@ -126,6 +128,28 @@ public class ManagerMainWindow extends JFrame{
 		logoutButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		logoutButton.setBounds(649, 484, 195, 58);
 		getContentPane().add(logoutButton);
+		
+		JButton viewRevenuesButton = new JButton("Revenues");
+		viewRevenuesButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewRevenuesWindow viewRevenuesWindow = new ViewRevenuesWindow();
+				viewRevenuesWindow.setVisible(true);
+			}
+		});
+		viewRevenuesButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		viewRevenuesButton.setBounds(365, 264, 195, 58);
+		getContentPane().add(viewRevenuesButton);
+		
+		JButton viewExpensesButton = new JButton("Expenses");
+		viewExpensesButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ViewExpensesWindow viewExpensesWindow = new ViewExpensesWindow();
+				viewExpensesWindow.setVisible(true);
+			}
+		});
+		viewExpensesButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		viewExpensesButton.setBounds(365, 358, 195, 58);
+		getContentPane().add(viewExpensesButton);
 		
 		setLocationRelativeTo(null);
 		

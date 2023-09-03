@@ -83,7 +83,7 @@ public class AppointmentService {
 			
 			LocalDateTime endTime = date.atTime(time).plusMinutes(service.getDurationInMinutes());
 			Timeslot timeslot = new Timeslot(startTime, endTime); 
-			appointments.add(new Appointment(client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice()));
+			appointments.add(new Appointment(-1, client, timeslot, service, AppointmentStatus.SCHEDULED, service.getPrice()));
 		}
 		
 		
@@ -112,11 +112,23 @@ public class AppointmentService {
 	}
 	
 	public ArrayList<Appointment> getAppointmentsByService(String serviceName) {
-		return null;
+		ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+		for(Appointment a : beautySalon.getAppointments()) {
+			if(a.getService().getName().equals(serviceName)) {
+				appointments.add(a);
+			}
+		}
+		return appointments;
 	}
 	
 	public ArrayList<Appointment> getAppointmentsByServiceType(String serviceType) {
-		return null;
+		ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+		for(Appointment a : beautySalon.getAppointments()) {
+			if(a.getService().getType().getType().equals(serviceType)) {
+				appointments.add(a);
+			}
+		}
+		return appointments;
 	}
 	
 }

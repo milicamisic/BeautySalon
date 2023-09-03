@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import gui.clientView.ClientMainWindow;
+import gui.receptionistView.ReceptionistMainWindow;
 import humanEntities.Beautician;
 import humanEntities.Client;
 import otherEntities.Appointment;
@@ -28,6 +29,7 @@ import otherEntities.Service;
 import paket1.BeautySalon;
 import service.AppointmentService;
 import service.ClientService;
+import service.ReceptionistService;
 
 public class ScheduleAppointmentWindow extends JFrame {
 
@@ -35,6 +37,7 @@ public class ScheduleAppointmentWindow extends JFrame {
 	
 	private static BeautySalon beautySalon;
 	private static ClientService clientService;
+	private static ReceptionistService receptionistService;
 	
 	private JTextField beauticianTextField;
 	private JTextField serviceTextField;
@@ -43,10 +46,11 @@ public class ScheduleAppointmentWindow extends JFrame {
 	ArrayList<Appointment> availableAppointments;
 
 	public ScheduleAppointmentWindow(Service service, Beautician beautician, ArrayList<Service> appropriateServices) {
-		setMinimumSize(new Dimension(790, 315));
+		setMinimumSize(new Dimension(780, 400));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		beautySalon = BeautySalon.getBeautySalon();
+		receptionistService =  new ReceptionistService();
 		clientService = new ClientService();
 		availableAppointments = null;
 		
@@ -92,6 +96,21 @@ public class ScheduleAppointmentWindow extends JFrame {
 		dateTextField.setBounds(144, 137, 161, 48);
 		getContentPane().add(dateTextField);
 		
+		JLabel lblUsername = new JLabel("Client:");
+		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblUsername.setBounds(37, 211, 127, 48);
+		getContentPane().add(lblUsername);
+		
+		ArrayList<String> clientUsernames = new ArrayList<String>();
+		for(Client c : beautySalon.getClients())
+		{
+			clientUsernames.add(c.getUsername());
+		}
+		JComboBox clientComboBox = new JComboBox(clientUsernames.toArray());
+		clientComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		clientComboBox.setBounds(144, 211, 203, 48);
+		getContentPane().add(clientComboBox);
+		
 		JComboBox<String> timeComboBox = new JComboBox<String>();
 		timeComboBox.setBounds(529, 136, 161, 48);
 		getContentPane().add(timeComboBox);
@@ -100,7 +119,7 @@ public class ScheduleAppointmentWindow extends JFrame {
 			
 			@Override
 			public void focusLost(FocusEvent e) {
-				availableAppointments = generateAppointments(service, beautician, dateTextField.getText().trim(), timeComboBox);		
+				availableAppointments = generateAppointments(service, beautician, dateTextField.getText().trim(), timeComboBox, clientComboBox);		
 			}
 			
 			@Override
@@ -118,16 +137,16 @@ public class ScheduleAppointmentWindow extends JFrame {
 				boolean inputValid = validateFields(dateTextField.getText());
 				if(inputValid) {
 					Appointment appointment = availableAppointments.get(timeComboBox.getSelectedIndex());
-					clientService.makeAppointment(appointment);
-					JOptionPane.showMessageDialog(null, "AppointmentScheduled!", "Info message", JOptionPane.INFORMATION_MESSAGE);
-					ClientMainWindow clientMainWindow = new ClientMainWindow();
-					clientMainWindow.setVisible(true);
+					receptionistService.makeAppointment(appointment);
+					JOptionPane.showMessageDialog(null, "Appointment Scheduled!", "Info message", JOptionPane.INFORMATION_MESSAGE);
+					ReceptionistMainWindow receptionistMainWindow = new ReceptionistMainWindow();
+					receptionistMainWindow.setVisible(true);
 					dispose();
 				}
 			}
 		});
 		scheduleButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		scheduleButton.setBounds(172, 215, 147, 48);
+		scheduleButton.setBounds(219, 290, 147, 48);
 		getContentPane().add(scheduleButton);
 		
 		JButton cancelButton = new JButton("Cancel");
@@ -139,7 +158,7 @@ public class ScheduleAppointmentWindow extends JFrame {
 			}
 		});
 		cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		cancelButton.setBounds(344, 215, 147, 48);
+		cancelButton.setBounds(391, 290, 147, 48);
 		getContentPane().add(cancelButton);
 		
 		setLocationRelativeTo(null);
@@ -153,9 +172,9 @@ public class ScheduleAppointmentWindow extends JFrame {
         });
 	}
 	
-	private static ArrayList<Appointment> generateAppointments(Service service, Beautician beautician, String dateString, JComboBox<String> timeComboBox) {
+	private static ArrayList<Appointment> generateAppointments(Service service, Beautician beautician, String dateString, JComboBox<String> timeComboBox, JComboBox<String> clientComboBox) {
 		LocalDate date = null;
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("d.M.y");
 		DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:m");
 		
 		try
@@ -174,7 +193,7 @@ public class ScheduleAppointmentWindow extends JFrame {
 		}
 		
 		AppointmentService appointmentService = new AppointmentService();
-		Client client = clientService.getClientByUsername(beautySalon.getCurrentUser().getUsername());
+		Client client = clientService.getClientByUsername((String) clientComboBox.getSelectedItem());
 		ArrayList<Appointment> availableAppointments = appointmentService.getAllPossibleAppointmentsForDay(client, date, service);
 		
 		if(availableAppointments != null) {

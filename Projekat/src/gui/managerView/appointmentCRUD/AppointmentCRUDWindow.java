@@ -55,8 +55,8 @@ public class AppointmentCRUDWindow extends JFrame {
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 	            if(table.getSelectedRow() != -1) {
-	               model.removeRow(table.getSelectedRow());
-	               JOptionPane.showMessageDialog(null, "Appointment deleted successfully!");
+	               model.cancelAppointment(table.getSelectedRow());
+	               JOptionPane.showMessageDialog(null, "Appointment canceled!");
 	            }
 			}
 		});

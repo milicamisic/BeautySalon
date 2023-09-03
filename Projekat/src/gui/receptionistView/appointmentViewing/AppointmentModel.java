@@ -78,14 +78,18 @@ public class AppointmentModel extends AbstractTableModel {
 		if(!service.equals("<no filter>")) {
 			appointments = appointmentService.getAppointmentsByService(service);
 		}
-		if(!serviceType.equals("<no filter>")) {
+		else if(!serviceType.equals("<no filter>")) {
 			appointments = appointmentService.getAppointmentsByServiceType(serviceType);
+		} else {
+			appointments = beautySalon.getAppointments(); // ako si vec stavila sa nekim filterima da moze da vrati na bez filtera
 		}
 		ArrayList<Appointment> filteredAppointments = new ArrayList<Appointment>();
 		
-		for(Appointment a : appointments) {
-			if(fromPrice <= a.getPrice() && a.getPrice() <= toPrice) {
-				filteredAppointments.add(a);
+		if(appointments != null) {
+			for(Appointment a : appointments) {
+				if(fromPrice <= a.getPrice() && a.getPrice() <= toPrice) {
+					filteredAppointments.add(a);
+				}
 			}
 		}
 		appointments = filteredAppointments;

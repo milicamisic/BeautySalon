@@ -3,10 +3,13 @@ package gui.receptionistView.appointmentViewing;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -20,6 +23,7 @@ import gui.receptionistView.ReceptionistMainWindow;
 import otherEntities.Service;
 import otherEntities.ServiceType;
 import paket1.BeautySalon;
+import service.ServiceService;
 
 public class ViewAppointmentsWindow extends JFrame {
 
@@ -88,6 +92,24 @@ public class ViewAppointmentsWindow extends JFrame {
 		filterLabel.setBounds(1269, 28, 68, 51);
 		getContentPane().add(filterLabel);
 		
+		JLabel serviceLabel = new JLabel("Service:");
+		serviceLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		serviceLabel.setBounds(1156, 197, 161, 48);
+		getContentPane().add(serviceLabel);
+		
+		ArrayList<String> servicesString = new ArrayList<String>();
+		ArrayList<Service> services = beautySalon.getServices();
+		for(Service s :  services)
+		{
+			servicesString.add(s.getName());
+		}
+		servicesString.add("<no filter>");
+		JComboBox serviceComboBox = new JComboBox(servicesString.toArray());
+		serviceComboBox.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		serviceComboBox.setBounds(1156, 256, 281, 48);
+		serviceComboBox.setSelectedItem("<no filter>");
+		getContentPane().add(serviceComboBox);
+		
 		JLabel serviceTypeLabel = new JLabel("Service Type:");
 		serviceTypeLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		serviceTypeLabel.setBounds(1156, 79, 161, 48);
@@ -104,24 +126,31 @@ public class ViewAppointmentsWindow extends JFrame {
 		JComboBox serviceTypeComboBox = new JComboBox(serviceTypesString.toArray());
 		serviceTypeComboBox.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		serviceTypeComboBox.setBounds(1156, 138, 281, 48);
+		serviceTypeComboBox.setSelectedItem("<no filter>");
+		serviceTypeComboBox.addItemListener(new ItemListener() {
+            public void itemStateChanged(ItemEvent event) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                	DefaultComboBoxModel<String> newModel = new DefaultComboBoxModel<>();
+                	
+                	if("<no filter>".equals((String) serviceTypeComboBox.getSelectedItem())) {
+                		for(Service s : beautySalon.getServices())
+                        {
+                        	newModel.addElement(s.getName());
+                        }
+                	} else {
+                		ServiceService serviceService = new ServiceService();
+                		ServiceType type = serviceService.getServiceTypeByName((String) serviceTypeComboBox.getSelectedItem());
+                        for(Service s : serviceService.getAppropriateServices(type))
+                        {
+                        	newModel.addElement(s.getName());
+                        }
+                	}
+                	newModel.addElement("<no filter>");
+                	serviceComboBox.setModel(newModel);
+                }
+            }
+        });
 		getContentPane().add(serviceTypeComboBox);
-		
-		JLabel serviceLabel = new JLabel("Service:");
-		serviceLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		serviceLabel.setBounds(1156, 197, 161, 48);
-		getContentPane().add(serviceLabel);
-		
-		ArrayList<String> servicesString = new ArrayList<String>();
-		ArrayList<Service> services = beautySalon.getServices();
-		for(Service s :  services)
-		{
-			servicesString.add(s.getName());
-		}
-		servicesString.add("<no filter>");
-		JComboBox serviceComboBox = new JComboBox(servicesString.toArray());
-		serviceComboBox.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		serviceComboBox.setBounds(1156, 256, 281, 48);
-		getContentPane().add(serviceComboBox);
 		
 		JLabel priceLabel = new JLabel("Price Range:");
 		priceLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -170,6 +199,19 @@ public class ViewAppointmentsWindow extends JFrame {
 		filterButton.setBounds(1184, 439, 237, 51);
 		getContentPane().add(filterButton);
 		
+		JButton modifyButton = new JButton("Modify");
+		modifyButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow() != -1) {
+					ModifyAppointmentWindow modifyAppointmentWindow = new ModifyAppointmentWindow(ViewAppointmentsWindow.this , table.getSelectedRow());
+					modifyAppointmentWindow.setVisible(true);
+				}
+			}
+		});
+		modifyButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		modifyButton.setBounds(410, 489, 156, 51);
+		getContentPane().add(modifyButton);
+		
 		setSize(1484, 600);
 		setTitle("Appointment View");
 		setLocationRelativeTo(null);
@@ -211,5 +253,9 @@ public class ViewAppointmentsWindow extends JFrame {
 		}
         
         return true;
+	}
+
+	public void refreshTable() {
+		model.fireTableDataChanged();
 	}
 }

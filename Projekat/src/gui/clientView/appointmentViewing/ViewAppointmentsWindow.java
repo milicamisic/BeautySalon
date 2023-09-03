@@ -73,7 +73,7 @@ public class ViewAppointmentsWindow extends JDialog{
 			        if (result == JOptionPane.YES_OPTION) {
 			        	 boolean removed = model.cancelAppointment(table.getSelectedRow());
 			        	 if(removed) {
-			        		 JOptionPane.showMessageDialog(null, "Selected row deleted successfully!");
+			        		 JOptionPane.showMessageDialog(null, "Appointment cancelled!");
 			        		 totalCostTextField.setText(Double.toString(client.getMoneySpent()));
 			        	 }
 			        	 else JOptionPane.showMessageDialog(null, "You can only cancel a scheduled appointment!", "Error message", JOptionPane.ERROR_MESSAGE);
