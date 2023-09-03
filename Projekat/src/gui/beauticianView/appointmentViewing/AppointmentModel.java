@@ -6,8 +6,8 @@ import javax.swing.table.AbstractTableModel;
 
 import humanEntities.Beautician;
 import otherEntities.Appointment;
+import service.AppointmentService;
 import service.BeauticianService;
-import service.ManagerService;
 
 public class AppointmentModel extends AbstractTableModel {
 	
@@ -15,12 +15,14 @@ public class AppointmentModel extends AbstractTableModel {
 	
 	private String[] columns = {"Id", "Beautician", "Client", "Start", "Duration", "Service", "Service Type", "Price", "Status"};
 	private BeauticianService beauticianService;
+	private AppointmentService appointmentService;
 	
 	private ArrayList<Appointment> appointments;
 
 	public AppointmentModel(Beautician beautician)
 	{
 		this.beauticianService = new BeauticianService();
+		this.appointmentService = new AppointmentService();
 		this.appointments = beauticianService.getScheduledAppointments(beautician);
 	}
 
@@ -59,5 +61,25 @@ public class AppointmentModel extends AbstractTableModel {
 	{
 		Appointment a = appointments.get(rowIndex);
 		return a.toCell(columnIndex);
+	}
+
+	public boolean completeAppointment(int selectedRow) {
+		Appointment appointment = appointments.get(selectedRow);
+		boolean done = appointmentService.completeAppointment(appointment.getId());
+		if(done) {
+			fireTableDataChanged();
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean clientDidntShowUp(int selectedRow) {
+		Appointment appointment = appointments.get(selectedRow);
+		boolean done = appointmentService.clientDidntShowUpForAppointment(appointment.getId());
+		if(done) {
+			fireTableDataChanged();
+			return true;
+		}
+		return false;
 	}
 }

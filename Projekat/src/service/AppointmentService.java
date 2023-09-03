@@ -131,4 +131,23 @@ public class AppointmentService {
 		return appointments;
 	}
 	
+	public boolean completeAppointment(int appointmentId) {
+		for(Appointment a : beautySalon.getAppointments()) {
+			if(a.getId() == appointmentId && a.getTimeslot().getStartTime().isBefore(LocalDateTime.now())) {
+				a.setStatus(AppointmentStatus.COMPLETED);
+				return true;
+			}
+		}
+		return false; // ako nije poceo ne moze da se zavrsi
+	}
+	
+	public boolean clientDidntShowUpForAppointment(int appointmentId) {
+		for(Appointment a : beautySalon.getAppointments()) {
+			if(a.getId() == appointmentId && a.getTimeslot().getEndTime().isBefore(LocalDateTime.now())) {
+				a.setStatus(AppointmentStatus.DIDNT_SHOW_UP);
+				return true;
+			}
+		}
+		return false; // ako se nije zavrsio onda klijent jos moze da se pojavi
+	}
 }

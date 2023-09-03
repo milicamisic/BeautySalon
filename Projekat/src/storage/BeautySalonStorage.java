@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import citanje.BeautySalonReader;
@@ -21,17 +23,27 @@ public class BeautySalonStorage {
 		return beautySalonReader.load();
 	}
 	
-	public void save(ArrayList<Object> beautySalonInfo) {
+	public void save(ArrayList<Object> info) {
 		String infoString = "";
+		
+		double balance = (Double) info.get(0);
+		double loyaltyCardPrecondition = (Double) info.get(1);
+		int completedAppointmentsForBonus = (Integer) info.get(2);
+		LocalTime workingHoursStart = (LocalTime) info.get(3);
+		LocalTime workingHoursEnd = (LocalTime) info.get(4);
+		
+		infoString += Double.toString(balance) + "|" +
+					  Double.toString(loyaltyCardPrecondition) + "|" + 
+					  Integer.toString(completedAppointmentsForBonus) + "|" + 
+					  workingHoursStart.format(DateTimeFormatter.ofPattern("H:m")) + "|" +
+					  workingHoursEnd.format(DateTimeFormatter.ofPattern("H:m"));
+		
 		try {
 			BufferedWriter bw = new BufferedWriter(
 									new OutputStreamWriter(
 											new FileOutputStream(STORAGE_PATH), "utf-8"));
 			
-			for(Object token : beautySalonInfo) {
-				infoString += token.toString() + "|";
-			}
-			infoString = infoString.substring(0, infoString.length()-1);
+			bw.write(infoString);
 			
 			bw.close();
 		} catch (UnsupportedEncodingException e) {

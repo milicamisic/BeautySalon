@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class BeautySalonReader {
@@ -27,6 +29,8 @@ public class BeautySalonReader {
 			info.add(Double.parseDouble(tokens[0]));
 			info.add(Double.parseDouble(tokens[1]));
 			info.add(Integer.parseInt(tokens[2]));
+			info.add(LocalTime.parse(tokens[3], DateTimeFormatter.ofPattern("H:m")));
+			info.add(LocalTime.parse(tokens[4], DateTimeFormatter.ofPattern("H:m")));
 			
 			br.close();
 		} catch (UnsupportedEncodingException e) {

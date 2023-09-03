@@ -193,7 +193,7 @@ public class ModifyAppointmentWindow extends JDialog {
 							dispose();
 							break;
 					}
-				}
+			}
 			}
 		});
 		modifyButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -209,6 +209,8 @@ public class ModifyAppointmentWindow extends JDialog {
 		cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		cancelButton.setBounds(755, 356, 156, 51);
 		getContentPane().add(cancelButton);
+		
+		setLocationRelativeTo(null);
 	}
 	
 	private boolean valideFields(String dateString, String timeString)
@@ -242,6 +244,28 @@ public class ModifyAppointmentWindow extends JDialog {
         	JOptionPane.showMessageDialog(null, "Time must be in format \"hour:minute\"!", "Error message", JOptionPane.ERROR_MESSAGE);
 			return false;
         }
+        
+        ServiceService serviceService = new ServiceService();
+        Service service = serviceService.getServiceByName((String) serviceComboBox.getSelectedItem());
+        String dateTimeString = dateString + " " + timeString;
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d.M.y H:m");
+		
+		LocalDateTime startTime = LocalDateTime.parse(dateTimeString, dateTimeFormatter);
+		if(service != null) {
+			LocalDateTime endTime = startTime.plusMinutes(service.getDurationInMinutes());
+			if(startTime.isBefore(LocalDateTime.now())) {
+				JOptionPane.showMessageDialog(null, "Date and time must be in the future!", "Error message", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			
+			if(startTime.toLocalTime().isBefore(beautySalon.getWorkingHoursStart()) || endTime.toLocalTime().isAfter(beautySalon.getWorkingHoursEnd())) {
+				JOptionPane.showMessageDialog(null, "Respect salon working hours!" , "Error message", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Select a service!", "Error message", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
         
         return true;
 	}

@@ -63,6 +63,38 @@ public class ViewAppointmentsWindow extends JFrame{
 		goBackButton.setBounds(963, 501, 156, 51);
 		getContentPane().add(goBackButton);
 		
+		JButton appointmentCompletedButton = new JButton("Completed");
+		appointmentCompletedButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow() != -1) {
+	               boolean completed = model.completeAppointment(table.getSelectedRow());
+	               if(completed) 
+	            	   JOptionPane.showMessageDialog(null, "Appointment completed!");
+	               else
+	            	   JOptionPane.showMessageDialog(null, "Appointment didn't start yet!", "Error message", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		appointmentCompletedButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		appointmentCompletedButton.setBounds(27, 501, 156, 51);
+		getContentPane().add(appointmentCompletedButton);
+		
+		JButton clientDidntShowUpButton = new JButton("Client Didn't Show Up");
+		clientDidntShowUpButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow() != -1) {
+	               boolean clientDidntShowUp = model.clientDidntShowUp(table.getSelectedRow());
+	               if(clientDidntShowUp) 
+	            	   JOptionPane.showMessageDialog(null, "Appointment status changed!");
+	               else
+	            	   JOptionPane.showMessageDialog(null, "Appointment didn't end yet!", "Error message", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		clientDidntShowUpButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		clientDidntShowUpButton.setBounds(214, 501, 269, 51);
+		getContentPane().add(clientDidntShowUpButton);
+		
 		setSize(1161, 600);
 		setTitle("Appointment View");
 		setLocationRelativeTo(null);

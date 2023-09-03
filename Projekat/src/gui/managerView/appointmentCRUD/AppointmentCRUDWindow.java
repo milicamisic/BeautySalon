@@ -51,8 +51,8 @@ public class AppointmentCRUDWindow extends JFrame {
 		addButton.setBounds(27, 501, 156, 51);
 		getContentPane().add(addButton);
 		
-		JButton removeButton = new JButton("Remove");
-		removeButton.addActionListener(new ActionListener() {
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 	            if(table.getSelectedRow() != -1) {
 	               model.cancelAppointment(table.getSelectedRow());
@@ -60,9 +60,9 @@ public class AppointmentCRUDWindow extends JFrame {
 	            }
 			}
 		});
-		removeButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		removeButton.setBounds(210, 501, 156, 51);
-		getContentPane().add(removeButton);
+		cancelButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		cancelButton.setBounds(210, 501, 156, 51);
+		getContentPane().add(cancelButton);
 		
 		JButton modifyButton = new JButton("Modify");
 		modifyButton.addActionListener(new ActionListener() {

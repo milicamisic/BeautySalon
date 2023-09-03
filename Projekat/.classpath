@@ -6,5 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="xchart/xchart-3.8.5.jar"/>
+	<classpathentry kind="lib" path="xchart/xchart-demo-3.8.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

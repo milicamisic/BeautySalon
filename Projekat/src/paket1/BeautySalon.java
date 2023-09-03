@@ -11,6 +11,7 @@ import humanEntities.Manager;
 import humanEntities.Receptionist;
 import humanEntities.User;
 import otherEntities.Appointment;
+import otherEntities.AppointmentStatus;
 import otherEntities.Expense;
 import otherEntities.Revenue;
 import otherEntities.Service;
@@ -31,13 +32,13 @@ import storage.ServiceStorage;
 import storage.ServiceTypeStorage;
 import storage.UserStorage;
 
-public class BeautySalon { //Singleton
+public class BeautySalon {
 	
 	private static BeautySalon beautySalon = null;
 	
 	public static BeautySalon getBeautySalon() {
 		if(beautySalon == null) {
-			beautySalon = new BeautySalon("Moj salon", LocalTime.of(8, 0), LocalTime.of(20, 0));
+			beautySalon = new BeautySalon("Moj salon");
 			beautySalon.initialize();
 		}
 		return beautySalon;
@@ -62,10 +63,8 @@ public class BeautySalon { //Singleton
 	private ArrayList<Revenue> revenues;
 	private ArrayList<Expense> expenses;
 	
-	private BeautySalon(String name, LocalTime workingHoursStart, LocalTime workingHoursEnd) {
+	private BeautySalon(String name) {
 		this.name = name;
-		this.workingHoursStart = workingHoursStart;
-		this.workingHoursEnd = workingHoursEnd;
 		
 		users = new ArrayList<User>();
 		managers = new ArrayList<Manager>();
@@ -85,9 +84,21 @@ public class BeautySalon { //Singleton
 		this.balance = (Double) info.get(0);
 		this.loyaltyCardPrecondition = (Double) info.get(1);
 		this.completedAppointmentsForBonus = (Integer) info.get(2);
-		LocalDate today = LocalDate.now();
-		if(today.getDayOfMonth() == 1)
-			payWorkers();
+		this.workingHoursStart = (LocalTime) info.get(3);
+		this.workingHoursEnd = (LocalTime) info.get(4);
+	}
+	
+	private void saveInfo() {
+		BeautySalonStorage storage = new BeautySalonStorage();
+		ArrayList<Object> settings = new ArrayList<Object>();
+		
+		settings.add(balance);
+		settings.add(loyaltyCardPrecondition);
+		settings.add(completedAppointmentsForBonus);
+		settings.add(workingHoursStart);
+		settings.add(workingHoursEnd);
+		
+		storage.save(settings);
 	}
 
 	private void initialize() {
@@ -115,22 +126,6 @@ public class BeautySalon { //Singleton
 		loadInfo();
 	}
 	
-	public void payWorkers() {
-		Expense e;
-		for(Manager m : managers) {
-			e = new Expense("Pay:" + m.getUsername(), m.getPay(),LocalDate.now());
-			addExpense(e);
-		}
-		for(Beautician b : beauticians) {
-			e = new Expense("Pay:" + b.getUsername(), b.getPay(),LocalDate.now());
-			addExpense(e);
-		}
-		for(Receptionist r : receptionists) {
-			e = new Expense("Pay:" + r.getUsername(), r.getPay(),LocalDate.now());
-			addExpense(e);
-		}
-	}
-	
 	public boolean isUsernameAvailable(String username) {
 		for(User u : this.users) {
 			if(u.getUsername().equals(username)) {
@@ -144,14 +139,32 @@ public class BeautySalon { //Singleton
 		Iterator<Service> si = this.services.iterator(); 
 		
 		while (si.hasNext()) { 
-			Service service = si.next(); 
+			Service service = si.next();
 			
-			if (service.getType().getType().equals(type)) { 
+			if (service.getType().getType().equals(type)) {
+				removeAllAppointmentsForService(service.getName());
 				si.remove(); 
 			} 
 		}
 	}
 	
+	private void removeAllAppointmentsForService(String serviceName) {
+		Iterator<Appointment> ai = this.appointments.iterator(); 
+		
+		while (ai.hasNext()) { 
+			Appointment a = ai.next();
+			
+			if (a.getService().getName().equals(serviceName)) {
+				if(a.getStatus() == AppointmentStatus.SCHEDULED || a.getStatus() == AppointmentStatus.CLIENT_CANCELED) {
+					addExpense(new Expense("Appointment " + a.getId() + " REMOVED", a.getPrice(), LocalDate.now()));
+					a.getClient().setMoneySpent(a.getClient().getMoneySpent() - a.getPrice());
+				}
+				ai.remove();
+			} 
+		}
+		
+	}
+
 	public void modifyAllServicesForServiceType(String type, String newType) {
 		for(int i = 0; i < this.services.size(); i++) {
 			if(this.services.get(i).getType().getType().equals(type)) {
@@ -182,8 +195,15 @@ public class BeautySalon { //Singleton
 		return loyaltyCardPrecondition;
 	}
 
-	public void setLoyaltyCardPrecondition(int loyaltyCardPrecondition) {
+	public void setLoyaltyCardPrecondition(double loyaltyCardPrecondition) {
 		this.loyaltyCardPrecondition = loyaltyCardPrecondition;
+		for(Client c: clients) {
+			if(c.getMoneySpent() >= loyaltyCardPrecondition) {
+				c.setLoyaltyCard(true);
+			} else {
+				c.setLoyaltyCard(false);
+			}
+		}
 	}
 
 	public String getName() {
@@ -622,5 +642,6 @@ public class BeautySalon { //Singleton
 		revenueStorage.save(revenues);
 		expenseStorage.save(expenses);
 		
+		saveInfo();
 	}
 }
